@@ -1,0 +1,19 @@
+name: CI - AVR-GCC Build
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Retrieve AVR-GCC Tools
+      run: apt-get install gcc-avr avr-libc avrdude
+    - name: Compile
+      run: make
