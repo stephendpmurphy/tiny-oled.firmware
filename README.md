@@ -20,6 +20,8 @@ For this project I will be using an [ATtiny87 from Atmel/Microchip](https://www.
 - 2x SPI
 - 1x I2c
 
+The project for the hardware can be found in the [tiny-oled.hardware](https://github.com/stephendpmurphy/tiny-oled.hardware) repository on my profile. The project will be created and managed using the open source electrical design suite, [KiCad](https://kicad-pcb.org/).
+
 ## Tools
 The entire project and installation is executed and used in Linux.
 
