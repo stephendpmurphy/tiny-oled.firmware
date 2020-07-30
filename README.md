@@ -26,12 +26,15 @@ The project for the hardware can be found in the [tiny-oled.hardware](https://gi
 The entire project and installation is executed and used in Linux.
 
 First start by installing *avr-gcc*, *avr-libs*, and *avrdude*
-> $ sudo apt-get install gcc-avr avr-libc avrdude
+```
+$ sudo apt-get install gcc-avr avr-libc avrdude
+```
 
 ## Compiling
 To compile run the following command
-> $ make
-
+```
+$ make
+```
 The output .bin and .hex files will be placed into the *output/* folder.
 
 ## Flashing
