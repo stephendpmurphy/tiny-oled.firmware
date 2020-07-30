@@ -1,5 +1,5 @@
 # ATtiny OLED
-
+![CI - AVR-GCC Build](https://github.com/stephendpmurphy/tiny-oled.firmware/workflows/CI%20-%20AVR-GCC%20Build/badge.svg)
 ## Description
 This project is intended to challenge myself and be used as a way to explore and try new concepts in a bare-metal 8bit environment. The current planned challenges are as follows
 - Implement feature rich source in a memory constrained environment (8KB Flash & 512B SRAM)
