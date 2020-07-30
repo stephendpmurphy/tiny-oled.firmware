@@ -27,7 +27,7 @@ INC=-I./inc \
 
 all:
 	rm -r -f ${OUTPUT_DIR}
-	mkdir -f ${OUTPUT_DIR}
+	mkdir ${OUTPUT_DIR}
 	${CC} ${CFLAGS} ${INC} -o ${OUTPUT_DIR}/${TARGET}.bin ${SRC}
 	${OBJCOPY} -j .text -j .data -O ihex ${OUTPUT_DIR}/${TARGET}.bin ${OUTPUT_DIR}/${TARGET}.hex
 
