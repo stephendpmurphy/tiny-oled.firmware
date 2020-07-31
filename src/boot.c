@@ -17,9 +17,10 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ****************************************************************************/
 
-#ifndef _MAIN_H_
-#define _MAIN_H_
+#include <stdio.h>
+#include <boot.h>
 
-#define MY_VALUE	10
-
-#endif // _MAIN_H_
+int main(void) {
+	// Bootloader
+	while(1);
+}

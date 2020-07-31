@@ -17,9 +17,9 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ****************************************************************************/
 
-#ifndef _MAIN_H_
-#define _MAIN_H_
+#ifndef _BOOT_H_
+#define _BOOT_H_
 
-#define MY_VALUE	10
+// Bootloader includes
 
-#endif // _MAIN_H_
+#endif // _BOOT_H_
