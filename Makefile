@@ -37,6 +37,7 @@ TOOLCHAIN_PREFIX=avr
 CC=${TOOLCHAIN_PREFIX}-gcc
 OBJCOPY=${TOOLCHAIN_PREFIX}-objcopy
 OBJDUMP=${TOOLCHAIN_PREFIX}-objdump
+SIZE=${TOOLCHAIN_PREFIX}-size
 
 # Compiler Options
 CFLAGS=-Wall -g -Os -mmcu=${MCU} -DF_CPU=${F_CPU}
@@ -57,16 +58,20 @@ all:
 	echo "BUILDING APPLICATION"
 	${CC} ${CFLAGS} ${INC} -o ${OUTPUT_DIR}/${TARGET_APP}.bin ${SRC_APP}
 	${OBJCOPY} -j .text -j .data -O ihex ${OUTPUT_DIR}/${TARGET_APP}.bin ${OUTPUT_DIR}/${TARGET_APP}.hex
+	${SIZE} ${OUTPUT_DIR}/${TARGET_APP}.bin
 
 	echo "BUILDING BOOTLOADER"
 	${CC} ${CFLAGS} -DBUILD_BOOTLOADER ${INC} -o ${OUTPUT_DIR}/${TARGET_BOOT}.bin ${SRC_BOOT}
 	${OBJCOPY} -j .text -j .data -O ihex ${OUTPUT_DIR}/${TARGET_BOOT}.bin ${OUTPUT_DIR}/${TARGET_BOOT}.hex
+	${SIZE} ${OUTPUT_DIR}/${TARGET_BOOT}.bin
 
 app:
 	echo "BUILDING APPLICATION"
 	mkdir -p ${OUTPUT_DIR}
 	${CC} ${CFLAGS} ${INC} -o ${OUTPUT_DIR}/${TARGET_APP}.bin ${SRC_APP}
 	${OBJCOPY} -j .text -j .data -O ihex ${OUTPUT_DIR}/${TARGET_APP}.bin ${OUTPUT_DIR}/${TARGET_APP}.hex
+	${SIZE} ${OUTPUT_DIR}/${TARGET_APP}.bin
+
 
 boot:
 	# Since we are building the bootloader.. Append the BUILD_BOOTLOADER macro to our definitions
@@ -74,6 +79,7 @@ boot:
 	mkdir -p ${OUTPUT_DIR}
 	${CC} ${CFLAGS} -DBUILD_BOOTLOADER ${INC} -o ${OUTPUT_DIR}/${TARGET_BOOT}.bin ${SRC_BOOT}
 	${OBJCOPY} -j .text -j .data -O ihex ${OUTPUT_DIR}/${TARGET_BOOT}.bin ${OUTPUT_DIR}/${TARGET_BOOT}.hex
+	${SIZE} ${OUTPUT_DIR}/${TARGET_BOOT}.bin
 
 test:
 	echo "RUNNING UNIT TESTS"
