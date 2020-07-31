@@ -43,6 +43,7 @@ CFLAGS=-Wall -g -Os -mmcu=${MCU} -DF_CPU=${F_CPU}
 
 # App source
 SRC_APP=./src/main.c \
+	./src/spi.c \
 
 # Boot source
 SRC_BOOT=./src/boot.c \
