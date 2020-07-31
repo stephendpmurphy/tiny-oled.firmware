@@ -20,7 +20,12 @@
 #include <stdio.h>
 #include <boot.h>
 
-int boot(void) {
+#ifdef BUILD_BOOTLOADER // Ceedling complains about two definitions of main..
+int main(void) {
+#else
+int boot_main(void) {
+#endif
 	// Bootloader
 	while(1);
 }
+
