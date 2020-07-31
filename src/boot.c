@@ -20,7 +20,7 @@
 #include <stdio.h>
 #include <boot.h>
 
-int main(void) {
+int boot(void) {
 	// Bootloader
 	while(1);
 }
