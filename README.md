@@ -2,14 +2,15 @@
 ![CI - AVR-GCC Build](https://github.com/stephendpmurphy/tiny-oled.firmware/workflows/CI%20-%20AVR-GCC%20Build/badge.svg)
 ## Description
 This project is intended to challenge myself and be used as a way to explore and try new concepts in a bare-metal 8bit environment. The current planned challenges are as follows
-- Implement feature rich source in a memory constrained environment (8KB Flash & 512B SRAM)
-- Create a fully functioning development environment in Linux without using Atmel Studio 7 - This will involve using compilers, linkers, and debuggers via CL and/or utilizing VScode for a front end GUI while still leaving the underlying tools and technology open and configurable
-- Implement a 128x64 pixel OLED driver without using off the shelf libraries (Both from a challenge perspective, and a memory constraint that may come in to play with small amounts of Flash and SRAM)
-- Integrate the FATFS lib for interfacing an SD card connected over SPI
-- Create a bootloader capable of loading a new image to Flash via UART or load a file from an SD card
-- Implement a WD timer for the sake of trying it. (lol)
-- Add low power capabilities
-- Implement fancy addressable RGB LEDs over I2C
+- [ ] Implement feature rich source in a memory constrained environment (8KB Flash & 512B SRAM)
+- [ ] Create a fully functioning development environment in Linux without using Atmel Studio 7 - This will involve using compilers, linkers, and debuggers via CL and/or utilizing VScode for a front end GUI while still leaving the underlying tools and technology open and configurable
+- [ ] Implement a 128x64 pixel OLED driver without using off the shelf libraries (Both from a challenge perspective, and a memory constraint that may come in to play with small amounts of Flash and SRAM)
+- [ ] Integrate the FATFS lib for interfacing an SD card connected over SPI
+- [ ] Create a bootloader capable of loading a new image to Flash via UART or load a file from an SD card
+- [ ] Implement a WD timer for the sake of trying it. (lol)
+- [ ] Add low power capabilities
+- [ ] Implement fancy addressable RGB LEDs over I2C
+- [X] Implement a unit test framework (Unity & Ceedling)
 
 ## Hardware
 For this project I will be using an [ATtiny87 from Atmel/Microchip](https://www.microchip.com/wwwproducts/en/ATTINY87). The part has a limited feature set and a small amount of memory, but hopefully enough to implement everything desired and provide an adequate challenge. 
@@ -72,6 +73,11 @@ To execute a specific test. Execute the the *ceedling* command with the *test:$U
 ```
 $ cd tests/
 $ cd ceedling test:test_boot
+```
+
+Alternatively, you can execute all tests from the Makefile
+```
+$ make test
 ```
 
 ## Flashing
