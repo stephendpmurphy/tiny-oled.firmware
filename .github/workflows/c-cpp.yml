@@ -17,3 +17,5 @@ jobs:
       run: sudo apt-get install gcc-avr avr-libc
     - name: Compile
       run: make
+    - name: Run Unit Tests
+      run: sudo apt-get install ruby ; sudo gem install ceedling ; make test

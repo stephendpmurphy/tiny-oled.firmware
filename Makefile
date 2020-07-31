@@ -39,7 +39,7 @@ OBJCOPY=${TOOLCHAIN_PREFIX}-objcopy
 OBJDUMP=${TOOLCHAIN_PREFIX}-objdump
 
 # Compiler Options
-CFLAGs=-std=C99 -Wall -g -Os -mmcu=${MCU} -DF_CPU=${F_CPU} -I.
+CFLAGS=-Wall -g -Os -mmcu=${MCU} -DF_CPU=${F_CPU}
 
 # App source
 SRC_APP=./src/main.c \
@@ -58,7 +58,7 @@ all:
 	${OBJCOPY} -j .text -j .data -O ihex ${OUTPUT_DIR}/${TARGET_APP}.bin ${OUTPUT_DIR}/${TARGET_APP}.hex
 
 	echo "BUILDING BOOTLOADER"
-	${CC} ${CFLAGS} ${INC} -o ${OUTPUT_DIR}/${TARGET_BOOT}.bin ${SRC_BOOT}
+	${CC} ${CFLAGS} -DBUILD_BOOTLOADER ${INC} -o ${OUTPUT_DIR}/${TARGET_BOOT}.bin ${SRC_BOOT}
 	${OBJCOPY} -j .text -j .data -O ihex ${OUTPUT_DIR}/${TARGET_BOOT}.bin ${OUTPUT_DIR}/${TARGET_BOOT}.hex
 
 app:
@@ -68,10 +68,15 @@ app:
 	${OBJCOPY} -j .text -j .data -O ihex ${OUTPUT_DIR}/${TARGET_APP}.bin ${OUTPUT_DIR}/${TARGET_APP}.hex
 
 boot:
+	# Since we are building the bootloader.. Append the BUILD_BOOTLOADER macro to our definitions
 	echo "BUILDING BOOTLOADER"
 	mkdir -p ${OUTPUT_DIR}
-	${CC} ${CFLAGS} ${INC} -o ${OUTPUT_DIR}/${TARGET_BOOT}.bin ${SRC_BOOT}
+	${CC} ${CFLAGS} -DBUILD_BOOTLOADER ${INC} -o ${OUTPUT_DIR}/${TARGET_BOOT}.bin ${SRC_BOOT}
 	${OBJCOPY} -j .text -j .data -O ihex ${OUTPUT_DIR}/${TARGET_BOOT}.bin ${OUTPUT_DIR}/${TARGET_BOOT}.hex
+
+test:
+	echo "RUNNING UNIT TESTS"
+	cd ./tests/ ; ceedling test:all
 
 flash_app:
 	avrdude -p ${MCU} -c usbasp -U flash:w:${TARGET_APP}.hex:i -F -P usb

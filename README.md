@@ -22,10 +22,34 @@ For this project I will be using an [ATtiny87 from Atmel/Microchip](https://www.
 
 The project for the hardware can be found in the [tiny-oled.hardware](https://github.com/stephendpmurphy/tiny-oled.hardware) repository on my profile. The project will be created and managed using the open source electrical design suite, [KiCad](https://kicad-pcb.org/).
 
-## Tools
-The entire project and installation is executed and used in Linux.
+# Getting started
 
-First start by installing *avr-gcc*, *avr-libs*, and *avrdude*
+## Cloning & Retrieving source
+Begin by cloning the repository
+```
+git clone https://github.com/stephendpmurphy/tiny-oled.firmware.git
+```
+
+Checkout submodules
+```
+git submodule --init --recursive
+```
+
+## Tools
+
+### Unity & CMock Unit Test Framework
+This project uses Unity for Unit Testing and CMock to mock the hardware interfaces that we will be communicating with.</br>
+First you will need to install Ruby so we can access *gem* to then retrieve the *Ceedling* tool.
+
+```
+$ sudo apt install ruby
+$ sudo gem install ceedling
+```
+
+*TO-DO* - For info on the structure of tests in this project, review the documentation [here](*)
+
+### AVR Tools & Utilities
+The AVR toolchain is needed for compiling and flashing AVR targets. The necessary tools can be installed by executing the command below.
 ```
 $ sudo apt-get install gcc-avr avr-libc avrdude
 ```
@@ -36,6 +60,19 @@ To compile run the following command
 $ make
 ```
 The output .bin and .hex files will be placed into the *output/* folder.
+
+## Executing unit tests
+To execute all unit tests. Move to the *tests* directory and executing the *ceedling* command
+```
+$ cd tests/
+$ ceedling
+```
+
+To execute a specific test. Execute the the *ceedling* command with the *test:$UNIT_TEST_NAME* option
+```
+$ cd tests/
+$ cd ceedling test:test_boot
+```
 
 ## Flashing
 *TO-DO*

@@ -54,3 +54,6 @@ dkms.conf
 
 # Output folder
 output/
+
+# Ceedling test output
+tests/build/
