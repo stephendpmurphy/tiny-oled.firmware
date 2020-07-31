@@ -18,6 +18,4 @@ jobs:
     - name: Compile
       run: make
     - name: Run Unit Tests
-      run: sudo apt-get install ruby
-      run: sudo gem install ceedling
-      run: make test
+      run: sudo apt-get install ruby ; sudo gem install ceedling ; make test
