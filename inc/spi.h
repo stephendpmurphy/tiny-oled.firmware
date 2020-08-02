@@ -1,5 +1,5 @@
 /****************************************************************************
-    tiny-oled.firmware - A project to the limits of my abilities and 
+    tiny-oled.firmware - A project to the limits of my abilities and
     understanding of embedded firmware development.
     Copyright (C) 2020 Stephen Murphy - github.com/stephendpmurphy
 
@@ -20,9 +20,11 @@
 #ifndef _SPI_H_
 #define _SPI_H
 
-uint8_t spi_init(void);
-uint8_t spi_write(uint8_t dev, uint8_t *buf, uint8_t len);
-uint8_t spi_read(uint8_t dev, uint8_t *buf, uint8_t len);
+void spi_init(void);
+uint8_t spi_write(uint8_t *buf,  uint8_t len);
+uint8_t spi_read(uint8_t *buf,  uint8_t len);
+void spi_assert_cs(uint8_t port, uint8_t pin);
+void spi_deassert_cs(uint8_t port, uint8_t pin);
 
 #endif // _SPI_H_
 
