@@ -17,15 +17,20 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ****************************************************************************/
 
-#include <stdio.h>
-#include "main.h"
-#include "spi.h"
+#ifndef _PINS_H_
+#define _PINS_H_
 
-int main(void) {
+#include <avr/io.h>
 
-    // Board init
-    spi_init();
+// SPI Pin definitions
+#define SPI_MOSI_DDR    (DDRA)
+#define SPI_MOSI_PIN    (4)
 
-    // Main application
-    while(MY_VALUE);
-}
+#define SPI_SCK_DDR     (DDRA)
+#define SPI_SCK_PIN     (5)
+
+#define SPI_SD_CS_DDR   (DDRA)
+#define SPI_SD_CS_PORT  (PORTA)
+#define SPI_SD_CS_PIN   (2)
+
+#endif // _PINS_H_

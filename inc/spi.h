@@ -17,15 +17,14 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ****************************************************************************/
 
-#include <stdio.h>
-#include "main.h"
-#include "spi.h"
+#ifndef _SPI_H_
+#define _SPI_H
 
-int main(void) {
+void spi_init(void);
+uint8_t spi_write(uint8_t *buf,  uint8_t len);
+uint8_t spi_read(uint8_t *buf,  uint8_t len);
+void spi_assert_cs(uint8_t port, uint8_t pin);
+void spi_deassert_cs(uint8_t port, uint8_t pin);
 
-    // Board init
-    spi_init();
+#endif // _SPI_H_
 
-    // Main application
-    while(MY_VALUE);
-}
