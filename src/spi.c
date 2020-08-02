@@ -19,7 +19,6 @@
 
 #include <avr/io.h>
 #include <stdint.h>
-#include <stddef.h>
 #include <string.h>
 #include <stdlib.h>
 #include "spi.h"
@@ -64,7 +63,7 @@ uint8_t spi_read(uint8_t *buf, uint8_t len) {
     // Make sure the length is non zero, and we weren't
     // given a NULL ptr buffer
     if( (len <= 0x00) || (buf == NULL) ) {
-        return 1;
+        return EXIT_FAILURE;
     }
 
     // While we still have bytes to read
