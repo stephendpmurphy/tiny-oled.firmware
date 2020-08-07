@@ -1,4 +1,4 @@
-# ATtiny OLED
+# attiny-oled
 ![CI - AVR-GCC Build](https://github.com/stephendpmurphy/tiny-oled.firmware/workflows/CI%20-%20AVR-GCC%20Build/badge.svg)
 ## Description
 This project is intended to challenge myself and be used as a way to explore and try new concepts in a bare-metal 8bit environment. The current planned challenges are as follows
@@ -13,7 +13,7 @@ This project is intended to challenge myself and be used as a way to explore and
 - [X] Implement a unit test framework (Unity & Ceedling)
 
 ## Hardware
-For this project I will be using an [ATtiny87 from Atmel/Microchip](https://www.microchip.com/wwwproducts/en/ATTINY87). The part has a limited feature set and a small amount of memory, but hopefully enough to implement everything desired and provide an adequate challenge. 
+For this project I will be using an [ATtiny87 from Atmel/Microchip](https://www.microchip.com/wwwproducts/en/ATTINY87). The part has a limited feature set and a small amount of memory, but hopefully enough to implement everything desired and provide an adequate challenge.
 - 8KB of Flash
 - 512B or SRAM
 - 512B of EEPROM
@@ -25,20 +25,18 @@ The project for the hardware can be found in the [tiny-oled.hardware](https://gi
 
 # Getting started
 
-## Cloning & Retrieving source
-Begin by cloning the repository
+#### Cloning & Retrieving source
+Begin by cloning the repository:
 ```
 git clone https://github.com/stephendpmurphy/tiny-oled.firmware.git
 ```
 
-Checkout submodules
+Checkout submodules:
 ```
 git submodule --init --recursive
 ```
 
-## Tools
-
-### Unity & CMock Unit Test Framework
+#### Installing Unity & CMock Unit Test Framework
 This project uses Unity for Unit Testing and CMock to mock the hardware interfaces that we will be communicating with.</br>
 First you will need to install Ruby so we can access *gem* to then retrieve the *Ceedling* tool.
 
@@ -49,37 +47,61 @@ $ sudo gem install ceedling
 
 *TO-DO* - For info on the structure of tests in this project, review the documentation [here](*)
 
-### AVR Tools & Utilities
-The AVR toolchain is needed for compiling and flashing AVR targets. The necessary tools can be installed by executing the command below.
+#### Installing AVR Tools & Utilities
+The AVR toolchain is needed for compiling and *avrdude* for flashing AVR targets. To install the necessary tools:
 ```
 $ sudo apt-get install gcc-avr avr-libc avrdude
 ```
 
-## Compiling
-To compile run the following command
+# Compile, Test and Flash
+#### Compiling
+To compile the application:
 ```
-$ make
+$ make app
 ```
-The output .bin and .hex files will be placed into the *output/* folder.
 
-## Executing unit tests
-To execute all unit tests. Move to the *tests* directory and executing the *ceedling* command
+To compile the bootloader:
+```
+$ make boot
+```
+
+To clean the build *ouput/* directory:
+```
+$ make clean
+```
+
+#### Executing unit tests
+
+To execute all unit tests. Move to the *tests* directory and executing the *ceedling* command:
 ```
 $ cd tests/
 $ ceedling
 ```
 
-To execute a specific test. Execute the the *ceedling* command with the *test:$UNIT_TEST_NAME* option
+To execute a specific test. Execute the the *ceedling* command with the *test:$UNIT_TEST_NAME* option:
 ```
 $ cd tests/
 $ cd ceedling test:test_boot
 ```
 
-Alternatively, you can execute all tests from the Makefile
+Alternatively, you can execute all tests from the Makefile:
 ```
 $ make test
 ```
 
-## Flashing
-*TO-DO*
+#### Flashing
+To erase the chip:
+```
+$ make erase_chip
+```
+
+To flash the application .hex:
+```
+$ make flash_app
+```
+
+To flash the bootloader .hex:
+```
+$ make flash_boot
+```
 

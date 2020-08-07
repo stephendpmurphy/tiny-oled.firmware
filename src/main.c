@@ -1,5 +1,5 @@
 /****************************************************************************
-    tiny-oled.firmware - A project to the limits of my abilities and
+    tiny-oled.firmware - A project to push the limits of my abilities and
     understanding of embedded firmware development.
     Copyright (C) 2020 Stephen Murphy - github.com/stephendpmurphy
 
@@ -18,7 +18,9 @@
 ****************************************************************************/
 
 #include <stdio.h>
+#include <util/delay.h>
 #include "main.h"
+#include "pins.h"
 #include "spi.h"
 
 int main(void) {
@@ -26,6 +28,18 @@ int main(void) {
     // Board init
     spi_init();
 
+    // Init the STAT LED DD register
+    LED_STAT_DDR |= (1 << LED_STAT_PIN);
+
     // Main application
-    while(MY_VALUE);
+    while(MY_VALUE) {
+        // Turn on the STAT LED
+        LED_STAT_PORT |= (1 << LED_STAT_PIN);
+        // Wait 1000 ms
+        _delay_ms(1000);
+        // Turn off the STAT LED
+        LED_STAT_PORT &= ~(1 << LED_STAT_PIN);
+        // Wait 250 ms
+        _delay_ms(250);
+    }
 }
