@@ -1,5 +1,5 @@
 /****************************************************************************
-    tiny-oled.firmware - A project to the limits of my abilities and
+    tiny-oled.firmware - A project to push the limits of my abilities and
     understanding of embedded firmware development.
     Copyright (C) 2020 Stephen Murphy - github.com/stephendpmurphy
 
@@ -32,5 +32,9 @@
 #define SPI_SD_CS_DDR   (DDRA)
 #define SPI_SD_CS_PORT  (PORTA)
 #define SPI_SD_CS_PIN   (2)
+
+#define LED_STAT_DDR    (DDRB)
+#define LED_STAT_PORT   (PORTB)
+#define LED_STAT_PIN    (4)
 
 #endif // _PINS_H_

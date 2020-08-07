@@ -1,5 +1,5 @@
 /****************************************************************************
-    tiny-oled.firmware - A project to the limits of my abilities and 
+    tiny-oled.firmware - A project to push the limits of my abilities and
     understanding of embedded firmware development.
     Copyright (C) 2020 Stephen Murphy - github.com/stephendpmurphy
 

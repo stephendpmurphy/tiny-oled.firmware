@@ -1,6 +1,6 @@
 #############################################################################
 #
-#   tiny-oled.firmware - A project to the limits of my abilities and 
+#   tiny-oled.firmware - A project to push the limits of my abilities and
 #   understanding of embedded firmware development.
 #   Copyright (C) 2020 Stephen Murphy - github.com/stephendpmurphy
 #
@@ -30,7 +30,7 @@ MCU=attiny87
 OUTPUT_DIR=./output
 
 # Macro Definitions
-F_CPU=1200000
+F_CPU=800000
 
 # Toolchain
 TOOLCHAIN_PREFIX=avr
@@ -86,10 +86,14 @@ test:
 	cd ./tests/ ; ceedling test:all
 
 flash_app:
-	avrdude -p ${MCU} -c usbasp -U flash:w:${TARGET_APP}.hex:i -F -P usb
+	avrdude -p ${MCU} -c avrispmkII -U flash:w:output/${TARGET_APP}.hex:i
 
 flash_boot:
-	avrdude -p ${MCU} -c usbasp -U flash:w:${TARGET_BOOT}.hex:i -F -P usb
+	avrdude -p ${MCU} -c avrispmkII -U flash:w:output/${TARGET_APP}.hex:i
+
+erase_chip:
+	avrdude -p ${MCU} -c avrispmkII -e
+
 
 clean:
 	rm -r -f ${OUTPUT_DIR}
