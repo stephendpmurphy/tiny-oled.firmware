@@ -29,9 +29,13 @@
 #define SPI_SCK_DDR     (DDRA)
 #define SPI_SCK_PIN     (5)
 
+#define SPI_SS_DDR      (DDRA)
+#define SPI_SS_PORT     (PORTA)
+#define SPI_SS_PIN      (6)
+
 #define SPI_SD_CS_DDR   (DDRA)
 #define SPI_SD_CS_PORT  (PORTA)
-#define SPI_SD_CS_PIN   (2)
+#define SPI_SD_CS_PIN   (3)
 
 #define LED_STAT_DDR    (DDRB)
 #define LED_STAT_PORT   (PORTB)
