@@ -18,6 +18,7 @@
 ****************************************************************************/
 
 #include <avr/io.h>
+#include <util/delay.h>
 #include <stdint.h>
 #include <string.h>
 #include <stdlib.h>
@@ -26,18 +27,27 @@
 
 void spi_init(void) {
 
-    // MOSI and SCK pin init
+    // Set MOSI and SCK as outputs
     SPI_MOSI_DDR    |= (0x01 << SPI_MOSI_PIN);
-    SPI_SCK_DDR     |= (0x01 << SPI_MOSI_PIN);
+    SPI_SCK_DDR     |= (0x01 << SPI_SCK_PIN);
+
+    // When in MASTER mode, we need to ensure the !SS pin
+    // is an output and driven high. Otherwise the SPI module
+    // will switch to a slave mode
+    SPI_SS_DDR      |= (0x01 << SPI_SS_PIN);
+    SPI_SS_PORT     |= (0x01 << SPI_SS_PIN);
 
     // SD Chip Select
     SPI_SD_CS_DDR   |= (0x01 << SPI_SD_CS_PIN);
+    SPI_SD_CS_PORT  |= (0x01 << SPI_SD_CS_PIN);
 
     // SPI Register Init
     SPCR |= (1 << SPE) | (0x01 << MSTR); // SPI Enable | Master Mode
 }
 
 uint8_t spi_write(uint8_t *buf, uint8_t len) {
+
+    uint8_t tx_count = 0;
 
     // Make sure the length is non zero, and we weren't
     // given a NULL ptr buffer
@@ -46,13 +56,13 @@ uint8_t spi_write(uint8_t *buf, uint8_t len) {
     }
 
     // While we still have bytes to write
-    while(len > 0) {
+    while(tx_count < len) {
         // Load the data for transmit
-        SPDR = buf[len];
+        SPDR = buf[tx_count];
         // Wait for it to finish transmitting
-        while( !(SPSR & (0x01 << SPIF)) );
+        while(!(SPSR & (1<<SPIF)));
         // Decrement the len count
-        len--;
+        tx_count++;
     }
 
     return EXIT_SUCCESS;
@@ -75,12 +85,4 @@ uint8_t spi_read(uint8_t *buf, uint8_t len) {
     }
 
     return EXIT_SUCCESS;
-}
-
-void spi_assert_cs(uint8_t port, uint8_t pin) {
-    port |= (1 << pin);
-}
-
-void spi_deassert_cs(uint8_t port, uint8_t pin) {
-    port &= ~(1 << pin);
 }
