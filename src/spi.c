@@ -18,7 +18,6 @@
 ****************************************************************************/
 
 #include <avr/io.h>
-#include <util/delay.h>
 #include <stdint.h>
 #include <string.h>
 #include <stdlib.h>
