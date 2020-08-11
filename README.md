@@ -9,7 +9,7 @@ This project is intended to challenge myself and be used as a way to explore and
 - [ ] Create a bootloader capable of loading a new image to Flash via UART or load a file from an SD card
 - [ ] Implement a WD timer for the sake of trying it. (lol)
 - [ ] Add low power capabilities
-- [ ] Implement fancy addressable RGB LEDs over I2C
+- [ ] Implement fancy addressable RGB LEDs
 - [X] Implement a unit test framework (Unity & Ceedling)
 
 ## Hardware
