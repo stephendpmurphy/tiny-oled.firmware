@@ -6,7 +6,7 @@ This project is intended to challenge myself and be used as a way to explore and
 - [ ] Create a fully functioning development environment in Linux without using Atmel Studio 7 - This will involve using compilers, linkers, and debuggers via CL and/or utilizing VScode for a front end GUI while still leaving the underlying tools and technology open and configurable
 - [ ] Implement a 128x64 pixel OLED driver without using off the shelf libraries (Both from a challenge perspective, and a memory constraint that may come in to play with small amounts of Flash and SRAM)
 - [ ] Integrate the FATFS lib for interfacing an SD card connected over SPI
-- [ ] Add a 9 axig Gyro sensor over SPI
+- [ ] Add a 9 axis Gyro sensor over SPI
 - [ ] Add a temp and humidity sensor over SPI
 - [ ] Create a bootloader capable of loading a new image to Flash via UART or load a file from an SD card
 - [ ] Implement a WD timer for the sake of trying it. (lol)
