@@ -30,7 +30,7 @@ MCU=attiny87
 OUTPUT_DIR=./output
 
 # Macro Definitions
-F_CPU=800000
+F_CPU=8000000
 
 # Toolchain
 TOOLCHAIN_PREFIX=avr
@@ -45,12 +45,14 @@ CFLAGS=-Wall -g -Os -mmcu=${MCU} -DF_CPU=${F_CPU}
 # App source
 SRC_APP=./src/main.c \
 	./src/spi.c \
+	./submodule/avr-ws2812/src/avr_ws2812.c \
 
 # Boot source
 SRC_BOOT=./src/boot.c \
 
 # Includes
 INC=-I./inc \
+	-I./submodule/avr-ws2812/inc \
 
 all:
 	mkdir -p ${OUTPUT_DIR}
