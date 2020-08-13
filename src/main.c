@@ -23,8 +23,16 @@
 #include "main.h"
 #include "pins.h"
 #include "spi.h"
+#include "avr_ws2812.h"
+
+#define	PIXEL_NUM   (8)
 
 int main(void) {
+    uint8_t x = 0;
+    uint8_t i;
+    ws2812_RGB_t pixels[PIXEL_NUM] = {0};
+	ws2812_RGB_t p = {0, 100, 0};
+    ws2812_RGB_t empty = {0,0,0};
 
     // Board init
     spi_init();
@@ -34,10 +42,24 @@ int main(void) {
 
     // Main application
     while(MY_VALUE) {
+        x++;
+
+        if(x > 7)
+            x = 0;
+
+        for (i = 0; i < PIXEL_NUM; ++i) {
+            if(i == x) {
+                pixels[i] = p;
+            }
+            else {
+                pixels[i] = empty;
+            }
+        }
+        ws2812_setleds(pixels, PIXEL_NUM);
+
         // Turn on the STAT LED
         LED_STAT_PORT |= (1 << LED_STAT_PIN);
-        // Wait 1000 ms
-        _delay_ms(1000);
+        _delay_ms(250);
         // Turn off the STAT LED
         LED_STAT_PORT &= ~(1 << LED_STAT_PIN);
         // Wait 250 ms

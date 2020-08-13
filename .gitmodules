@@ -1,0 +1,3 @@
+[submodule "submodule/avr-ws2812"]
+	path = submodule/avr-ws2812
+	url = https://github.com/stephendpmurphy/avr-ws2812.git
