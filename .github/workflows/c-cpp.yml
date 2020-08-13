@@ -13,6 +13,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - name: Check out submodules
+      run: git submodule update --init --recursive
     - name: Retrieve AVR-GCC Tools
       run: sudo apt-get install gcc-avr avr-libc
     - name: Compile
