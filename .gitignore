@@ -57,3 +57,8 @@ output/
 
 # Ceedling test output
 tests/build/
+
+# Ignore AVR Fuse output
+lfuse.*
+hfuse.*
+efuse.*
