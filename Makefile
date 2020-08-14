@@ -96,6 +96,15 @@ flash_boot:
 erase_chip:
 	avrdude -p ${MCU} -c avrispmkII -e
 
+read_fuses:
+	avrdude -p ${MCU} -c avrispmkII -U lfuse:r:lfuse.txt:h
+	avrdude -p ${MCU} -c avrispmkII -U hfuse:r:hfuse.txt:h
+	avrdude -p ${MCU} -c avrispmkII -U efuse:r:efuse.txt:h
+
+write_fuses:
+	avrdude -p ${MCU} -c avrispmkII -U lfuse:w:0xe2:m
+	avrdude -p ${MCU} -c avrispmkII -U hfuse:w:0xdf:m
+	avrdude -p ${MCU} -c avrispmkII -U efuse:w:0xff:m
 
 clean:
 	rm -r -f ${OUTPUT_DIR}
