@@ -24,7 +24,7 @@ TARGET_APP=tiny-oled
 TARGET_BOOT=boot
 
 # MCU Type
-MCU=attiny87
+MCU=attiny167
 
 # Output directory
 OUTPUT_DIR=./output
@@ -57,34 +57,34 @@ INC=-I./inc \
 all:
 	mkdir -p ${OUTPUT_DIR}
 
-	echo "BUILDING APPLICATION"
+	@echo "BUILDING APPLICATION"
 	${CC} ${CFLAGS} ${INC} -o ${OUTPUT_DIR}/${TARGET_APP}.bin ${SRC_APP}
 	${OBJCOPY} -j .text -j .data -O ihex ${OUTPUT_DIR}/${TARGET_APP}.bin ${OUTPUT_DIR}/${TARGET_APP}.hex
-	${SIZE} ${OUTPUT_DIR}/${TARGET_APP}.bin
+	${SIZE} -C --mcu=${MCU} ${OUTPUT_DIR}/${TARGET_APP}.bin
 
-	echo "BUILDING BOOTLOADER"
+	@echo "BUILDING BOOTLOADER"
 	${CC} ${CFLAGS} -DBUILD_BOOTLOADER ${INC} -o ${OUTPUT_DIR}/${TARGET_BOOT}.bin ${SRC_BOOT}
 	${OBJCOPY} -j .text -j .data -O ihex ${OUTPUT_DIR}/${TARGET_BOOT}.bin ${OUTPUT_DIR}/${TARGET_BOOT}.hex
-	${SIZE} ${OUTPUT_DIR}/${TARGET_BOOT}.bin
+	${SIZE} -C --mcu=${MCU} ${OUTPUT_DIR}/${TARGET_BOOT}.bin
 
 app:
-	echo "BUILDING APPLICATION"
+	@echo "BUILDING APPLICATION"
 	mkdir -p ${OUTPUT_DIR}
 	${CC} ${CFLAGS} ${INC} -o ${OUTPUT_DIR}/${TARGET_APP}.bin ${SRC_APP}
 	${OBJCOPY} -j .text -j .data -O ihex ${OUTPUT_DIR}/${TARGET_APP}.bin ${OUTPUT_DIR}/${TARGET_APP}.hex
-	${SIZE} ${OUTPUT_DIR}/${TARGET_APP}.bin
+	${SIZE} -C --mcu=${MCU} ${OUTPUT_DIR}/${TARGET_APP}.bin
 
 
 boot:
 	# Since we are building the bootloader.. Append the BUILD_BOOTLOADER macro to our definitions
-	echo "BUILDING BOOTLOADER"
+	@echo "BUILDING BOOTLOADER"
 	mkdir -p ${OUTPUT_DIR}
 	${CC} ${CFLAGS} -DBUILD_BOOTLOADER ${INC} -o ${OUTPUT_DIR}/${TARGET_BOOT}.bin ${SRC_BOOT}
 	${OBJCOPY} -j .text -j .data -O ihex ${OUTPUT_DIR}/${TARGET_BOOT}.bin ${OUTPUT_DIR}/${TARGET_BOOT}.hex
-	${SIZE} ${OUTPUT_DIR}/${TARGET_BOOT}.bin
+	${SIZE} -C --mcu=${MCU} ${OUTPUT_DIR}/${TARGET_BOOT}.bin
 
 test:
-	echo "RUNNING UNIT TESTS"
+	@echo "RUNNING UNIT TESTS"
 	cd ./tests/ ; ceedling test:all
 
 flash_app:
