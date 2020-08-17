@@ -24,15 +24,38 @@
 #include "pins.h"
 #include "spi.h"
 #include "avr_ws2812.h"
+#include "pff.h"
+#include "diskio.h"
 
 #define	PIXEL_NUM   (8)
 
+FATFS fs = {0};
+
+static void ASSERT(uint8_t res, uint8_t expected) {
+    if(res != expected) {
+        while(1) {
+            for(uint8_t x = res; x > 0; x--)
+            {
+                LED_STAT_PORT |= (1 << LED_STAT_PIN);
+                _delay_ms(250);
+                // Turn off the STAT LED
+                LED_STAT_PORT &= ~(1 << LED_STAT_PIN);
+                // Wait 250 ms
+                _delay_ms(250);
+            }
+
+            _delay_ms(1000);
+        }
+    }
+}
+
 int main(void) {
-    uint8_t x = 0;
-    uint8_t i;
-    ws2812_RGB_t pixels[PIXEL_NUM] = {0};
-	ws2812_RGB_t p = {0, 100, 0};
-    ws2812_RGB_t empty = {0,0,0};
+    // uint8_t res;
+    // uint8_t x = 0;
+    // uint8_t i;
+    // ws2812_RGB_t pixels[PIXEL_NUM] = {0};
+	// ws2812_RGB_t p = {0, 100, 0};
+    // ws2812_RGB_t empty = {0,0,0};
 
     // Board init
     spi_init();
@@ -40,29 +63,35 @@ int main(void) {
     // Init the STAT LED DD register
     LED_STAT_DDR |= (1 << LED_STAT_PIN);
 
+    // Init the Disk level
+    ASSERT(disk_initialize(), RES_OK);
+
+    // // Mount the FS
+    // ASSERT(pf_mount(&fs), FR_OK);
+
     // Main application
     while(MY_VALUE) {
-        x++;
+        // x++;
 
-        if(x > 7)
-            x = 0;
+        // if(x > 7)
+        //     x = 0;
 
-        for (i = 0; i < PIXEL_NUM; ++i) {
-            if(i == x) {
-                pixels[i] = p;
-            }
-            else {
-                pixels[i] = empty;
-            }
-        }
-        ws2812_setleds(pixels, PIXEL_NUM);
+        // for (i = 0; i < PIXEL_NUM; ++i) {
+        //     if(i == x) {
+        //         pixels[i] = p;
+        //     }
+        //     else {
+        //         pixels[i] = empty;
+        //     }
+        // }
+        // ws2812_setleds(pixels, PIXEL_NUM);
 
-        // Turn on the STAT LED
-        LED_STAT_PORT |= (1 << LED_STAT_PIN);
-        _delay_ms(250);
-        // Turn off the STAT LED
-        LED_STAT_PORT &= ~(1 << LED_STAT_PIN);
-        // Wait 250 ms
-        _delay_ms(250);
+        // // Turn on the STAT LED
+        // LED_STAT_PORT |= (1 << LED_STAT_PIN);
+        // _delay_ms(250);
+        // // Turn off the STAT LED
+        // LED_STAT_PORT &= ~(1 << LED_STAT_PIN);
+        // // Wait 250 ms
+        // _delay_ms(250);
     }
 }

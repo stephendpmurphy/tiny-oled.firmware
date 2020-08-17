@@ -35,7 +35,8 @@
 
 #define SPI_SD_CS_DDR   (DDRA)
 #define SPI_SD_CS_PORT  (PORTA)
-#define SPI_SD_CS_PIN   (3)
+#define SPI_SD_CS_PIN   (PINB)
+#define SPI_SD_CS_BIT   (3)
 
 #define LED_STAT_DDR    (DDRB)
 #define LED_STAT_PORT   (PORTB)

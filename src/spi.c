@@ -77,6 +77,8 @@ uint8_t spi_read(uint8_t *buf, uint8_t len) {
 
     // While we still have bytes to read
     while(len > 0) {
+        SPDR = 0xFF; // Load a dummy byte
+        while(!(SPSR & (1<<SPIF)));
         // Grab a byte from the input buffer
         memcpy(&buf[len], (void *)&SPDR, 0x01);
         // Decrement the len count

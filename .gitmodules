@@ -1,3 +1,6 @@
 [submodule "submodule/avr-ws2812"]
 	path = submodule/avr-ws2812
 	url = https://github.com/stephendpmurphy/avr-ws2812.git
+[submodule "submodule/petit_fatfs"]
+	path = submodule/petit_fatfs
+	url = https://github.com/stephendpmurphy/Petit_FatFs.git

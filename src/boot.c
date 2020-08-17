@@ -19,6 +19,10 @@
 
 #include <stdio.h>
 #include <boot.h>
+#include "spi.h"
+#include "pff.h"
+
+FATFS fs = {0};
 
 #ifdef BUILD_BOOTLOADER // Ceedling complains about two definitions of main..
 int main(void) {

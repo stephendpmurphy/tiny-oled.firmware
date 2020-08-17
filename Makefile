@@ -45,14 +45,23 @@ CFLAGS=-Wall -g -Os -mmcu=${MCU} -DF_CPU=${F_CPU}
 # App source
 SRC_APP=./src/main.c \
 	./src/spi.c \
+	./src/sd/usr_pff.c \
 	./submodule/avr-ws2812/src/avr_ws2812.c \
+	./submodule/petit_fatfs/source/diskio.c \
+	./submodule/petit_fatfs/source/pff.c \
 
 # Boot source
 SRC_BOOT=./src/boot.c \
+	./src/spi.c \
+	./src/sd/usr_pff.c \
+	./submodule/petit_fatfs/source/diskio.c \
+	./submodule/petit_fatfs/source/pff.c \
 
 # Includes
 INC=-I./inc \
+	-I./inc/sd \
 	-I./submodule/avr-ws2812/inc \
+	-I./submodule/petit_fatfs/source \
 
 all:
 	mkdir -p ${OUTPUT_DIR}
