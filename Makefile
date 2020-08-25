@@ -24,7 +24,7 @@ TARGET_APP=tiny-oled
 TARGET_BOOT=boot
 
 # MCU Type
-MCU=attiny167
+MCU=atmega32u4
 
 # Output directory
 OUTPUT_DIR=./output
