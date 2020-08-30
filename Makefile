@@ -102,9 +102,9 @@ read_fuses:
 	avrdude -p ${MCU} -c avrispmkII -U efuse:r:efuse.txt:h
 
 write_fuses:
-	avrdude -p ${MCU} -c avrispmkII -U lfuse:w:0xe2:m
-	avrdude -p ${MCU} -c avrispmkII -U hfuse:w:0xdf:m
-	avrdude -p ${MCU} -c avrispmkII -U efuse:w:0xff:m
+	avrdude -p ${MCU} -c avrispmkII -U lfuse:w:0xde:m
+	avrdude -p ${MCU} -c avrispmkII -U hfuse:w:0xd9:m
+	avrdude -p ${MCU} -c avrispmkII -U efuse:w:0xcb:m
 
 clean:
 	rm -r -f ${OUTPUT_DIR}
