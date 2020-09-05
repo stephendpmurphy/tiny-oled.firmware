@@ -28,22 +28,34 @@
 #include <avr/io.h>
 
 // SPI Pin definitions
-#define SPI_MOSI_DDR    (DDRB)
-#define SPI_MOSI_PIN    (2)
+#define SPI_MOSI_DDR        (DDRB)
+#define SPI_MOSI_PIN        (2)
 
-#define SPI_SCK_DDR     (DDRB)
-#define SPI_SCK_PIN     (1)
+#define SPI_SCK_DDR         (DDRB)
+#define SPI_SCK_PIN         (1)
 
-#define SPI_SS_DDR      (DDRB)
-#define SPI_SS_PORT     (PORTB)
-#define SPI_SS_PIN      (6)
+#define SPI_SS_DDR          (DDRB)
+#define SPI_SS_PORT         (PORTB)
+#define SPI_SS_PIN          (0)
 
-#define SPI_SD_CS_DDR   (DDRB)
-#define SPI_SD_CS_PORT  (PORTB)
-#define SPI_SD_CS_PIN   (3)
+#define SPI_SD_CS_DDR       (DDRB)
+#define SPI_SD_CS_PORT      (PORTB)
+#define SPI_SD_CS_PIN       (3)
 
-#define LED_STAT_DDR    (DDRD)
-#define LED_STAT_PORT   (PORTD)
-#define LED_STAT_PIN    (4)
+#define SPI_DISP_CS_DDR     (DDRD)
+#define SPI_DISP_CS_PORT    (PORTD)
+#define SPI_DISP_CS_PIN     (6)
+
+#define DISP_RES_DDR        (DDRB)
+#define DISP_RES_PORT       (PORTB)
+#define DISP_RES_PIN        (4)
+
+#define DISP_DC_DDR         (DDRD)
+#define DISP_DC_PORT        (PORTD)
+#define DISP_DC_PIN         (7)
+
+#define LED_STAT_DDR        (DDRD)
+#define LED_STAT_PORT       (PORTD)
+#define LED_STAT_PIN        (4)
 
 #endif // _PINS_H_

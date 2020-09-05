@@ -43,12 +43,13 @@ OBJDUMP=${TOOLCHAIN_PREFIX}-objdump
 SIZE=${TOOLCHAIN_PREFIX}-size
 
 # Compiler Options
-CFLAGS=-Wall -g -Os -mmcu=${MCU} -DF_CPU=${F_CPU}
+CFLAGS = -Wall -gstabs -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -Os -mmcu=${MCU} -DF_CPU=${F_CPU}
+CFLAGS += -ffunction-sections -fdata-sections -Wl,--gc-sections
 
 # App source
-SRC_APP=./src/main.c \
-	./src/spi.c \
-	./submodule/avr-ws2812/src/avr_ws2812.c \
+SRC_APP =	$(wildcard ./src/*.c) \
+			$(wildcard ./submodule/avr-ws2812/src/*.c) \
+			$(wildcard ./submodule/u8g2/csrc/*.c) \
 
 # Boot source
 SRC_BOOT=./src/boot.c \
@@ -56,6 +57,7 @@ SRC_BOOT=./src/boot.c \
 # Includes
 INC=-I./inc \
 	-I./submodule/avr-ws2812/inc \
+	-I./submodule/u8g2/csrc \
 
 all:
 	mkdir -p ${OUTPUT_DIR}
