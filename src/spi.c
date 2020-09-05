@@ -45,6 +45,10 @@ void spi_init(void) {
     SPI_SD_CS_DDR   |= (0x01 << SPI_SD_CS_PIN);
     SPI_SD_CS_PORT  |= (0x01 << SPI_SD_CS_PIN);
 
+    // Display Chip Select
+    SPI_DISP_CS_DDR |= (0x01 << SPI_DISP_CS_PIN);
+    SPI_DISP_CS_PORT |= (0x01 << SPI_DISP_CS_PIN);
+
     // SPI Register Init
     SPCR |= (1 << SPE) | (0x01 << MSTR); // SPI Enable | Master Mode
 }

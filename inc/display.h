@@ -22,55 +22,9 @@
     SOFTWARE.
 ****************************************************************************/
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <util/delay.h>
-#include "main.h"
-#include "pins.h"
-#include "spi.h"
-#include "avr_ws2812.h"
-#include "display.h"
+#ifndef _DISPLAY_H_
+#define _DISPLAY_H_
 
-#define	PIXEL_NUM   (8)
+void display_init(void);
 
-int main(void) {
-    uint8_t x = 0;
-    uint8_t i;
-    ws2812_RGB_t pixels[PIXEL_NUM] = {0};
-	ws2812_RGB_t p = {0, 100, 0};
-    ws2812_RGB_t empty = {0,0,0};
-
-    // Board init
-    spi_init();
-    // Init the OLED Display
-    display_init();
-
-    // Init the STAT LED DD register
-    LED_STAT_DDR |= (1 << LED_STAT_PIN);
-
-    // Main application
-    while(MY_VALUE) {
-        x++;
-
-        if(x > 7)
-            x = 0;
-
-        for (i = 0; i < PIXEL_NUM; ++i) {
-            if(i == x) {
-                pixels[i] = p;
-            }
-            else {
-                pixels[i] = empty;
-            }
-        }
-        ws2812_setleds(pixels, PIXEL_NUM);
-
-        // Turn on the STAT LED
-        LED_STAT_PORT |= (1 << LED_STAT_PIN);
-        _delay_ms(250);
-        // Turn off the STAT LED
-        LED_STAT_PORT &= ~(1 << LED_STAT_PIN);
-        // Wait 250 ms
-        _delay_ms(250);
-    }
-}
+#endif // _DISPLAY_H_
