@@ -32,7 +32,6 @@
 uint8_t u8g2_gpio_and_delay_avr(U8X8_UNUSED u8x8_t *u8x8, U8X8_UNUSED uint8_t msg, U8X8_UNUSED uint8_t arg_int, U8X8_UNUSED void *arg_ptr);
 uint8_t u8x8_byte_4wire_sw_spi_avr(u8x8_t *u8x8, uint8_t msg, uint8_t arg_int, void *arg_ptr);
 
-
 static u8g2_t u8g2;
 
 static void _set_cs_pin(uint8_t val) {
@@ -136,5 +135,24 @@ void display_init(void) {
         u8g2_SetFont(&u8g2, u8g2_font_7x13B_tf);
         u8g2_DrawStr(&u8g2, 36, 11, "tiny-OLED");
         u8g2_DrawStr(&u8g2, 15, 29, "stephendpmurphy");
+    } while (u8g2_NextPage(&u8g2));
+}
+
+void display_climate(long int temp, long int humidity, long int pressure) {
+    char str[64] = {0x00};
+
+    u8g2_FirstPage(&u8g2);
+    do
+    {
+        u8g2_SetFont(&u8g2, u8g2_font_7x13B_tf);
+
+        sprintf(str, "T: %ld", temp);
+        u8g2_DrawStr(&u8g2, 0, 14, str);
+
+        sprintf(str, "P: %ld", pressure);
+        u8g2_DrawStr(&u8g2, 64, 14, str);
+
+        sprintf(str, "H: %ld", humidity);
+        u8g2_DrawStr(&u8g2, 0, 30, str);
     } while (u8g2_NextPage(&u8g2));
 }
