@@ -50,6 +50,7 @@ CFLAGS += -ffunction-sections -fdata-sections -Wl,--gc-sections
 SRC_APP =	$(wildcard ./src/*.c) \
 			$(wildcard ./submodule/avr-ws2812/src/*.c) \
 			$(wildcard ./submodule/u8g2/csrc/*.c) \
+			$(wildcard ./submodule/bme280_driver/*.c) \
 
 # Boot source
 SRC_BOOT=./src/boot.c \
@@ -58,6 +59,7 @@ SRC_BOOT=./src/boot.c \
 INC=-I./inc \
 	-I./submodule/avr-ws2812/inc \
 	-I./submodule/u8g2/csrc \
+	-I./submodule/bme280_driver \
 
 all:
 	mkdir -p ${OUTPUT_DIR}

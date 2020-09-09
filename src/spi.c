@@ -49,6 +49,10 @@ void spi_init(void) {
     SPI_DISP_CS_DDR |= (0x01 << SPI_DISP_CS_PIN);
     SPI_DISP_CS_PORT |= (0x01 << SPI_DISP_CS_PIN);
 
+    // BME280 Chip Select
+    SPI_BME280_CS_DDR |= (0x01 << SPI_BME280_CS_PIN);
+    SPI_BME280_CS_PORT |= (0x01 << SPI_BME280_CS_PIN);
+
     // SPI Register Init
     SPCR |= (1 << SPE) | (0x01 << MSTR); // SPI Enable | Master Mode
 }
@@ -69,7 +73,7 @@ uint8_t spi_write(uint8_t *buf, uint8_t len) {
         SPDR = buf[tx_count];
         // Wait for it to finish transmitting
         while(!(SPSR & (1<<SPIF)));
-        // Decrement the len count
+        // Increment the tx count
         tx_count++;
     }
 
@@ -78,6 +82,8 @@ uint8_t spi_write(uint8_t *buf, uint8_t len) {
 
 uint8_t spi_read(uint8_t *buf, uint8_t len) {
 
+    uint8_t rx_count = 0;
+
     // Make sure the length is non zero, and we weren't
     // given a NULL ptr buffer
     if( (len <= 0x00) || (buf == NULL) ) {
@@ -85,11 +91,15 @@ uint8_t spi_read(uint8_t *buf, uint8_t len) {
     }
 
     // While we still have bytes to read
-    while(len > 0) {
+    while(rx_count < len) {
+        // Load a dummy byte to transmit
+        SPDR = 0xFF;
+        // Wait for the transmission to finish
+        while(!(SPSR & (1 << SPIF)));
         // Grab a byte from the input buffer
-        memcpy(&buf[len], (void *)&SPDR, 0x01);
-        // Decrement the len count
-        len--;
+        memcpy(&buf[rx_count], (void *)&SPDR, 0x01);
+        // Increment the RX count
+        rx_count++;
     }
 
     return EXIT_SUCCESS;

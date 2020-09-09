@@ -26,5 +26,6 @@
 #define _DISPLAY_H_
 
 void display_init(void);
+void display_climate(long int temp, long int humidity, long int pressure);
 
 #endif // _DISPLAY_H_

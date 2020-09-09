@@ -30,47 +30,36 @@
 #include "spi.h"
 #include "avr_ws2812.h"
 #include "display.h"
+#include "bme280.h"
+#include "climate.h"
 
 #define	PIXEL_NUM   (8)
 
 int main(void) {
-    uint8_t x = 0;
-    uint8_t i;
-    ws2812_RGB_t pixels[PIXEL_NUM] = {0};
-	ws2812_RGB_t p = {0, 100, 0};
-    ws2812_RGB_t empty = {0,0,0};
+    int8_t rslt = BME280_OK;
 
     // Board init
     spi_init();
     // Init the OLED Display
     display_init();
+    // Init the BME280 Climate sensor
+    rslt = climate_init();
 
     // Init the STAT LED DD register
     LED_STAT_DDR |= (1 << LED_STAT_PIN);
 
+    _delay_ms(1500);
+
     // Main application
-    while(MY_VALUE) {
-        x++;
+    while(1) {
 
-        if(x > 7)
-            x = 0;
+        rslt = climate_getData();
 
-        for (i = 0; i < PIXEL_NUM; ++i) {
-            if(i == x) {
-                pixels[i] = p;
-            }
-            else {
-                pixels[i] = empty;
-            }
+        if( rslt == BME280_OK )
+        {
+            display_climate(climate_info.comp_data.temperature, climate_info.comp_data.humidity, climate_info.comp_data.pressure);
         }
-        ws2812_setleds(pixels, PIXEL_NUM);
 
-        // Turn on the STAT LED
-        LED_STAT_PORT |= (1 << LED_STAT_PIN);
-        _delay_ms(250);
-        // Turn off the STAT LED
-        LED_STAT_PORT &= ~(1 << LED_STAT_PIN);
-        // Wait 250 ms
-        _delay_ms(250);
+        _delay_ms(100);
     }
 }
