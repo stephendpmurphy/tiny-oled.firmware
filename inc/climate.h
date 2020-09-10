@@ -3,16 +3,9 @@
 
 #include "bme280.h"
 
-typedef struct {
-    struct bme280_dev dev;
-    struct bme280_data comp_data;
-    uint8_t dev_addr;
-    uint32_t req_delay;
-} str_climate_t;
+int8_t climate_init(void);
+int8_t climate_getData(void);
 
-int climate_init(void);
-int climate_getData(void);
-
-extern str_climate_t climate_info;
+extern struct bme280_data climate_data;
 
 #endif // _CLIMATE_H_

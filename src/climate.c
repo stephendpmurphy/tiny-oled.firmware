@@ -6,14 +6,17 @@
 #include "climate.h"
 #include "pins.h"
 
+struct bme280_data climate_data;
+
 static int8_t user_spi_write(uint8_t reg_addr, const uint8_t *data, uint32_t len, void *intf_ptr);
 static int8_t user_spi_read(uint8_t reg_addr, uint8_t *data, uint32_t len, void *intf_ptr);
 static void user_delay_us(uint32_t period, void *intf_ptr);
 
-str_climate_t climate_info = {0};
+struct bme280_dev dev;
+uint8_t dev_addr;
+uint32_t req_delay;
 
 int8_t user_spi_write(uint8_t reg_addr, const uint8_t *data, uint32_t len, void *intf_ptr) {
-
     // Check the input parameters
     if( data == NULL )
     {
@@ -35,7 +38,6 @@ int8_t user_spi_write(uint8_t reg_addr, const uint8_t *data, uint32_t len, void 
 }
 
 int8_t user_spi_read(uint8_t reg_addr, uint8_t *data, uint32_t len, void *intf_ptr) {
-
     // Check the input parameters
     if( data == NULL )
     {
@@ -53,61 +55,65 @@ int8_t user_spi_read(uint8_t reg_addr, uint8_t *data, uint32_t len, void *intf_p
     // De-assert CS
     SPI_BME280_CS_PORT |= (0x01 << SPI_BME280_CS_PIN);
 
-
     return BME280_OK;
 }
 
 void user_delay_us(uint32_t period, void *intf_ptr) {
-
     while( period > 0) {
         _delay_us(1);
         period--;
     }
 }
 
-int climate_init(void) {
-
+int8_t climate_init(void) {
     int8_t rslt = BME280_OK;
     uint8_t settings_sel;
 
-    climate_info.dev.intf_ptr = &climate_info.dev_addr;
-    climate_info.dev.intf = BME280_SPI_INTF;
-    climate_info.dev.read = user_spi_read;
-    climate_info.dev.write = user_spi_write;
-    climate_info.dev.delay_us = user_delay_us;
+    // Set our dev SPI & Delay functions
+    dev.intf_ptr = &dev_addr;
+    dev.intf = BME280_SPI_INTF;
+    dev.read = user_spi_read;
+    dev.write = user_spi_write;
+    dev.delay_us = user_delay_us;
 
-    rslt = bme280_init(&climate_info.dev);
+    // Init thhe BME280 driver
+    rslt = bme280_init(&dev);
 
     if( rslt == BME280_OK ) {
-        climate_info.dev.settings.osr_h = BME280_OVERSAMPLING_1X;
-        climate_info.dev.settings.osr_p = BME280_OVERSAMPLING_16X;
-        climate_info.dev.settings.osr_t = BME280_OVERSAMPLING_2X;
-        climate_info.dev.settings.filter = BME280_FILTER_COEFF_16;
+        // Updating the sampling settings
+        dev.settings.osr_h = BME280_OVERSAMPLING_1X;
+        dev.settings.osr_p = BME280_OVERSAMPLING_16X;
+        dev.settings.osr_t = BME280_OVERSAMPLING_2X;
+        dev.settings.filter = BME280_FILTER_COEFF_16;
+        dev.settings.standby_time = BME280_STANDBY_TIME_62_5_MS;
 
-        settings_sel = BME280_OSR_PRESS_SEL | BME280_OSR_TEMP_SEL | BME280_OSR_HUM_SEL | BME280_FILTER_SEL;
+        settings_sel = BME280_OSR_PRESS_SEL | BME280_OSR_TEMP_SEL | BME280_OSR_HUM_SEL | BME280_FILTER_SEL | BME280_STANDBY_SEL;
 
-        rslt = bme280_set_sensor_settings(settings_sel, &climate_info.dev);
+        // Apply the sensor settings
+        rslt = bme280_set_sensor_settings(settings_sel, &dev);
+    }
 
-        climate_info.req_delay = bme280_cal_meas_delay(&climate_info.dev.settings);
+    if( rslt == BME280_OK ) {
+        // Set the sensor mode to normal
+        rslt = bme280_set_sensor_mode(BME280_NORMAL_MODE, &dev);
+    }
 
-        rslt = bme280_set_sensor_mode(BME280_FORCED_MODE, &climate_info.dev);
-
-        climate_info.dev.delay_us(climate_info.req_delay, climate_info.dev.intf_ptr);
-
-        rslt = bme280_get_sensor_data(BME280_ALL, &climate_info.comp_data, &climate_info.dev);
-
-        climate_info.dev.delay_us(climate_info.req_delay, climate_info.dev.intf_ptr);
+    if( rslt == BME280_OK ) {
+        // Determine the minimum delay needed with our current cal and sample settings
+        req_delay = bme280_cal_meas_delay(&dev.settings);
+        // Delay the above determined amount of time
+        dev.delay_us(req_delay, dev.intf_ptr);
+        // Retrieve the sensor data for the first time
+        rslt = bme280_get_sensor_data(BME280_ALL, &climate_data, &dev);
     }
 
     return rslt;
 }
 
-int climate_getData(void) {
+int8_t climate_getData(void) {
     int8_t rslt = BME280_OK;
-
-    rslt = bme280_set_sensor_mode(BME280_FORCED_MODE, &climate_info.dev);
-    climate_info.dev.delay_us(climate_info.req_delay, climate_info.dev.intf_ptr);
-    rslt = bme280_get_sensor_data(BME280_ALL, &climate_info.comp_data, &climate_info.dev);
+    // Retrieve the sensor data
+    rslt = bme280_get_sensor_data(BME280_ALL, &climate_data, &dev);
 
     return rslt;
 }

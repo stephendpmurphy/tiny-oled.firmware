@@ -57,7 +57,7 @@ int main(void) {
 
         if( rslt == BME280_OK )
         {
-            display_climate(climate_info.comp_data.temperature, climate_info.comp_data.humidity, climate_info.comp_data.pressure);
+            display_climate(climate_data.temperature, climate_data.humidity, climate_data.pressure);
         }
 
         _delay_ms(100);
