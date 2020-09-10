@@ -1,0 +1,15 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "/usr/lib/avr/include/**"
+            ],
+            "compilerPath": "/usr/bin/avr-gcc",
+            "intelliSenseMode": "gcc-x64",
+            "cStandard": "c99"
+        }
+    ],
+    "version": 4
+}
