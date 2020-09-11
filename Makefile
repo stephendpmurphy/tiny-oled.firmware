@@ -69,23 +69,11 @@ all:
 	${OBJCOPY} -j .text -j .data -O ihex ${OUTPUT_DIR}/${TARGET_APP}.bin ${OUTPUT_DIR}/${TARGET_APP}.hex
 	${SIZE} -C --mcu=${MCU} ${OUTPUT_DIR}/${TARGET_APP}.bin
 
-	@echo "BUILDING BOOTLOADER"
-	${CC} ${CFLAGS} -DBUILD_BOOTLOADER ${INC} -o ${OUTPUT_DIR}/${TARGET_BOOT}.bin ${SRC_BOOT}
-	${OBJCOPY} -j .text -j .data -O ihex ${OUTPUT_DIR}/${TARGET_BOOT}.bin ${OUTPUT_DIR}/${TARGET_BOOT}.hex
-	${SIZE} -C --mcu=${MCU} ${OUTPUT_DIR}/${TARGET_BOOT}.bin
-
-app:
-	@echo "BUILDING APPLICATION"
-	mkdir -p ${OUTPUT_DIR}
-	${CC} ${CFLAGS} ${INC} -o ${OUTPUT_DIR}/${TARGET_APP}.bin ${SRC_APP}
-	${OBJCOPY} -j .text -j .data -O ihex ${OUTPUT_DIR}/${TARGET_APP}.bin ${OUTPUT_DIR}/${TARGET_APP}.hex
-	${SIZE} -C --mcu=${MCU} ${OUTPUT_DIR}/${TARGET_APP}.bin
-
-
 boot:
+	mkdir -p ${OUTPUT_DIR}
+
 	# Since we are building the bootloader.. Append the BUILD_BOOTLOADER macro to our definitions
 	@echo "BUILDING BOOTLOADER"
-	mkdir -p ${OUTPUT_DIR}
 	${CC} ${CFLAGS} -DBUILD_BOOTLOADER ${INC} -o ${OUTPUT_DIR}/${TARGET_BOOT}.bin ${SRC_BOOT}
 	${OBJCOPY} -j .text -j .data -O ihex ${OUTPUT_DIR}/${TARGET_BOOT}.bin ${OUTPUT_DIR}/${TARGET_BOOT}.hex
 	${SIZE} -C --mcu=${MCU} ${OUTPUT_DIR}/${TARGET_BOOT}.bin
@@ -94,11 +82,11 @@ test:
 	@echo "RUNNING UNIT TESTS"
 	cd ./tests/ ; ceedling test:all
 
-flash_app:
-	avrdude -p ${MCU} -c avrispmkII -U flash:w:output/${TARGET_APP}.hex:i
+flash:
+	avrdude -p ${MCU} -B 1 -c avrispmkII -U flash:w:output/${TARGET_APP}.hex:i
 
 flash_boot:
-	avrdude -p ${MCU} -c avrispmkII -U flash:w:output/${TARGET_APP}.hex:i
+	avrdude -p ${MCU} -B 1 -c avrispmkII -U flash:w:output/${TARGET_APP}.hex:i
 
 erase_chip:
 	avrdude -p ${MCU} -c avrispmkII -e

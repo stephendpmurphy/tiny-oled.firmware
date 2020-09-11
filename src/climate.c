@@ -16,7 +16,7 @@ struct bme280_dev dev;
 uint8_t dev_addr;
 uint32_t req_delay;
 
-int8_t user_spi_write(uint8_t reg_addr, const uint8_t *data, uint32_t len, void *intf_ptr) {
+static int8_t user_spi_write(uint8_t reg_addr, const uint8_t *data, uint32_t len, void *intf_ptr) {
     // Check the input parameters
     if( data == NULL )
     {
@@ -24,7 +24,7 @@ int8_t user_spi_write(uint8_t reg_addr, const uint8_t *data, uint32_t len, void 
     }
 
     // Assert CS
-    SPI_BME280_CS_PORT &= ~(0x01 << SPI_BME280_CS_PIN);
+    spi_assertCS(&SPI_BME280_CS_PORT, SPI_BME280_CS_PIN, 0);
 
     // Transmit the address
     spi_write(&reg_addr, 0x01);
@@ -32,12 +32,12 @@ int8_t user_spi_write(uint8_t reg_addr, const uint8_t *data, uint32_t len, void 
     spi_write((uint8_t *)data, len);
 
     // De-assert CS
-    SPI_BME280_CS_PORT |= (0x01 << SPI_BME280_CS_PIN);
+    spi_assertCS(&SPI_BME280_CS_PORT, SPI_BME280_CS_PIN, 1);
 
     return BME280_OK;
 }
 
-int8_t user_spi_read(uint8_t reg_addr, uint8_t *data, uint32_t len, void *intf_ptr) {
+static int8_t user_spi_read(uint8_t reg_addr, uint8_t *data, uint32_t len, void *intf_ptr) {
     // Check the input parameters
     if( data == NULL )
     {
@@ -45,7 +45,7 @@ int8_t user_spi_read(uint8_t reg_addr, uint8_t *data, uint32_t len, void *intf_p
     }
 
     // Assert CS
-    SPI_BME280_CS_PORT &= ~(0x01 << SPI_BME280_CS_PIN);
+    spi_assertCS(&SPI_BME280_CS_PORT, SPI_BME280_CS_PIN, 0);
 
     // Transmit the address
     spi_write(&reg_addr, 0x01);
@@ -53,12 +53,12 @@ int8_t user_spi_read(uint8_t reg_addr, uint8_t *data, uint32_t len, void *intf_p
     spi_read(data, len);
 
     // De-assert CS
-    SPI_BME280_CS_PORT |= (0x01 << SPI_BME280_CS_PIN);
+    spi_assertCS(&SPI_BME280_CS_PORT, SPI_BME280_CS_PIN, 1);
 
     return BME280_OK;
 }
 
-void user_delay_us(uint32_t period, void *intf_ptr) {
+static void user_delay_us(uint32_t period, void *intf_ptr) {
     while( period > 0) {
         _delay_us(1);
         period--;

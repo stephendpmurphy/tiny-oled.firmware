@@ -43,14 +43,17 @@ void spi_init(void) {
 
     // SD Chip Select
     SPI_SD_CS_DDR   |= (0x01 << SPI_SD_CS_PIN);
+    // Set it high
     SPI_SD_CS_PORT  |= (0x01 << SPI_SD_CS_PIN);
 
     // Display Chip Select
     SPI_DISP_CS_DDR |= (0x01 << SPI_DISP_CS_PIN);
+    // Set it high
     SPI_DISP_CS_PORT |= (0x01 << SPI_DISP_CS_PIN);
 
     // BME280 Chip Select
     SPI_BME280_CS_DDR |= (0x01 << SPI_BME280_CS_PIN);
+    // Set it high
     SPI_BME280_CS_PORT |= (0x01 << SPI_BME280_CS_PIN);
 
     // SPI Register Init
@@ -103,4 +106,14 @@ uint8_t spi_read(uint8_t *buf, uint8_t len) {
     }
 
     return EXIT_SUCCESS;
+}
+
+void spi_assertCS(volatile uint8_t *port, uint8_t pin, uint8_t val) {
+
+    if( val ) {
+        *port |= (0x01 << pin);
+    }
+    else {
+        *port &= ~(0x01 << pin);
+    }
 }

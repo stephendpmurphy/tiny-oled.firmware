@@ -35,14 +35,9 @@ uint8_t u8x8_byte_4wire_sw_spi_avr(u8x8_t *u8x8, uint8_t msg, uint8_t arg_int, v
 static u8g2_t u8g2;
 
 static void _set_cs_pin(uint8_t val) {
-    if( val )
-    {
-        SPI_DISP_CS_PORT |= (0x01 << SPI_DISP_CS_PIN);
-    }
-    else
-    {
-        SPI_DISP_CS_PORT &= ~(0x01 << SPI_DISP_CS_PIN);
-    }
+
+    // Assert CS
+    spi_assertCS(&SPI_DISP_CS_PORT, SPI_DISP_CS_PIN, val);
 }
 
 static void _set_res_pin(uint8_t val) {
