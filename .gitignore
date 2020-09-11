@@ -62,3 +62,6 @@ tests/build/
 lfuse.*
 hfuse.*
 efuse.*
+
+# Doxygen output
+doc/

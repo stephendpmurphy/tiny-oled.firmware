@@ -22,10 +22,34 @@
     SOFTWARE.
 ****************************************************************************/
 
+/*! @file display.h
+ * @brief Module for driving the tiny-oled display.
+ * This module displays information using the u8g2 lib connected to an SSD1306 OLED.
+ */
+
 #ifndef _DISPLAY_H_
 #define _DISPLAY_H_
 
+/*!
+ * @brief This API initializes the u8g2 instance and writes the tiny-oled splash screen
+ * onto the display.
+ *
+ * @param void
+ *
+ * @return void
+ */
 void display_init(void);
+
+/*!
+ * @brief This API displays the climate screen with our temp, humidity and pressure
+ * values.
+ *
+ * @param[in] temp : Temperature reading to be displayed
+ * @param[in] humidity : Humidity reading to be displayed
+ * @param[in] pressure : Pressure reading to be displayed
+ *
+ * @return void
+ */
 void display_climate(long int temp, long int humidity, long int pressure);
 
 #endif // _DISPLAY_H_

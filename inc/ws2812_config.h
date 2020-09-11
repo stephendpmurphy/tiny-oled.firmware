@@ -22,6 +22,10 @@
     SOFTWARE.
 ****************************************************************************/
 
+/*! @file ws2812_config.h
+ * @brief Header file for the WS2812 driver config
+ */
+
 #ifndef WS2812_CONFIG_H_
 #define WS2812_CONFIG_H_
 

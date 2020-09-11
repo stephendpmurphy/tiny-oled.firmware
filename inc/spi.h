@@ -22,12 +22,51 @@
     SOFTWARE.
 ****************************************************************************/
 
+/*! @file spi.h
+ * @brief Header file for the AVR SPI module API
+ */
+
 #ifndef _SPI_H_
 #define _SPI_H
 
+/*!
+ * @brief This API initiliazes the AVR SPI module.
+ *
+ * @param void
+ *
+ * @return void
+ */
 void spi_init(void);
+
+/*!
+ * @brief This API writes data via the AVR SPI module.
+ *
+ * @param[in] *buf : Pointer to a buffer containing data to be written
+ * @param[in] len : Length of data to be written from our buffer via SPI
+ *
+ * @return Returns the state of the SPI write
+ */
 uint8_t spi_write(uint8_t *buf,  uint8_t len);
+
+/*!
+ * @brief This API reads data via the AVR SPI module.
+ *
+ * @param[out] *buf : Pointer to a buffer where our read data should be placed
+ * @param[in] len : Length of data to be read to our buffer via SPI
+ *
+ * @return Returns the state of the SPI read
+ */
 uint8_t spi_read(uint8_t *buf,  uint8_t len);
+
+/*!
+ * @brief This API asserts the CS line for our desired device.
+ *
+ * @param[in] port : Which PORT we want to update
+ * @param[in] pin : Which PIN we want to update in the provided PORT
+ * @param[in] val : Value to be written to our PIN in the specified PORT
+ *
+ * @return void
+ */
 void spi_assertCS(volatile uint8_t *port, uint8_t pin, uint8_t val);
 
 #endif // _SPI_H_

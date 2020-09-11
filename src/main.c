@@ -22,6 +22,10 @@
     SOFTWARE.
 ****************************************************************************/
 
+/*! @file main.c
+ * @brief Main source for the tiny-oled firmware
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <util/delay.h>
@@ -33,8 +37,13 @@
 #include "bme280.h"
 #include "climate.h"
 
-#define	PIXEL_NUM   (8)
+#define	PIXEL_NUM   (8) /* Number of WS2812 pixels in our LED strip */
 
+/*!
+ * @brief Main function and entry point for the firmware
+ * @param void
+ * @return void
+ */
 int main(void) {
     int8_t rslt = BME280_OK;
 

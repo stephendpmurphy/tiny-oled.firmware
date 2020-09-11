@@ -22,9 +22,18 @@
     SOFTWARE.
 ****************************************************************************/
 
+/*! @file boot.c
+ * @brief Main source for the bootloader
+ */
+
 #include <stdio.h>
 #include <boot.h>
 
+/*!
+ * @brief Main function and entry point for the bootloader
+ * @param void
+ * @return void
+ */
 #ifdef BUILD_BOOTLOADER // Ceedling complains about two definitions of main..
 int main(void) {
 #else

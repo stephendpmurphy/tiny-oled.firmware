@@ -1,3 +1,31 @@
+/****************************************************************************
+    tiny-oled.firmware - A project to push the limits of my abilities and
+    understanding of embedded firmware development.
+    Copyright (C) 2020 Stephen Murphy - github.com/stephendpmurphy
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in all
+    copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    SOFTWARE.
+****************************************************************************/
+
+/*! @file climate.c
+ * @brief Module used to interact with the bme280 temp and humidity sensor
+ */
+
 #include <string.h>
 #include <stdlib.h>
 #include <util/delay.h>
@@ -6,16 +34,55 @@
 #include "climate.h"
 #include "pins.h"
 
-struct bme280_data climate_data;
-
+/*!
+ * @brief Callback for AVR specific SPI writes driven by the BME280 driver
+ *
+ * @param[in] reg_addr : Address to write to via SPI
+ * @param[in] *data : Pointer to a buffer of data to be written via SPI
+ * @param[in] len : Length of data to be written from the data buffer
+ * @param[in] *intf_ptr : Pointer to our interface - Only used if more than one BME280 is connected
+ *
+ * @return Result of the SPI write
+ */
 static int8_t user_spi_write(uint8_t reg_addr, const uint8_t *data, uint32_t len, void *intf_ptr);
+
+/*!
+ * @brief Callback for AVR specific SPI reads driven by the BME280 driver
+ *
+ * @param[in] reg_addr : Address to read from via SPI
+ * @param[out] *data : Pointer to a buffer where the read data should be placed
+ * @param[in] len : Length of data to be read from the device and written to our data buffer
+ * @param[in] *intf_ptr : Pointer to our interface - Only used if more than one BME280 is connected
+ *
+ * @return Result of the SPI read
+ */
 static int8_t user_spi_read(uint8_t reg_addr, uint8_t *data, uint32_t len, void *intf_ptr);
+
+/*!
+ * @brief Callback for our AVR specific delay
+ *
+ * @param[in] period : Duration we should delay - in us
+ * @param[in] *intf_ptr : Pointer to a buffer to be used with the msg/event
+ *
+ * @return Result of GPIO/Delay msg/event
+ */
 static void user_delay_us(uint32_t period, void *intf_ptr);
 
+/*! @brief bme280 captured climate data */
+struct bme280_data climate_data;
+
+/*! @brief bme280 device instance */
 struct bme280_dev dev;
+
+/*! @brief bme280 device address/instance */
 uint8_t dev_addr;
+
+/*! @brief bme280 min req delay between samples */
 uint32_t req_delay;
 
+/*!
+ * @brief Callback for AVR specific SPI writes driven by the BME280 driver
+ */
 static int8_t user_spi_write(uint8_t reg_addr, const uint8_t *data, uint32_t len, void *intf_ptr) {
     // Check the input parameters
     if( data == NULL )
@@ -37,6 +104,9 @@ static int8_t user_spi_write(uint8_t reg_addr, const uint8_t *data, uint32_t len
     return BME280_OK;
 }
 
+/*!
+ * @brief Callback for AVR specific SPI reads driven by the BME280 driver
+ */
 static int8_t user_spi_read(uint8_t reg_addr, uint8_t *data, uint32_t len, void *intf_ptr) {
     // Check the input parameters
     if( data == NULL )
@@ -58,6 +128,9 @@ static int8_t user_spi_read(uint8_t reg_addr, uint8_t *data, uint32_t len, void 
     return BME280_OK;
 }
 
+/*!
+ * @brief Callback for our AVR specific delay
+ */
 static void user_delay_us(uint32_t period, void *intf_ptr) {
     while( period > 0) {
         _delay_us(1);
@@ -65,6 +138,9 @@ static void user_delay_us(uint32_t period, void *intf_ptr) {
     }
 }
 
+/*!
+ * @brief This API initializes the climate module and sets up the BME280 register
+ */
 int8_t climate_init(void) {
     int8_t rslt = BME280_OK;
     uint8_t settings_sel;
@@ -110,6 +186,9 @@ int8_t climate_init(void) {
     return rslt;
 }
 
+/*!
+ * @brief This API retrieves temp, pressure, and humidity data from the BME280
+ */
 int8_t climate_getData(void) {
     int8_t rslt = BME280_OK;
     // Retrieve the sensor data
