@@ -103,4 +103,9 @@ write_fuses:
 
 clean:
 	rm -r -f ${OUTPUT_DIR}
+	rm -r -f ./doc
+
+docs:
+	doxygen Doxyfile
+	@echo "\n\nDOCUMENTS LOCATED AT: ${PWD}/doc/html/index.html\n\n"
 

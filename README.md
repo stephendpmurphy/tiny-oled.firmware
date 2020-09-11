@@ -56,6 +56,13 @@ The AVR toolchain is needed for compiling and *avrdude* for flashing AVR targets
 $ sudo apt-get install gcc-avr avr-libc avrdude
 ```
 
+# Documentation
+Documentation is handled using Doxygen. To generate the HTML documentation:
+```
+$ make docs
+```
+The generated documenation can then be found at ./doc/html/index.html
+
 # Compile, Test, Flash and AVR Fuses
 #### Compiling
 To compile the application:

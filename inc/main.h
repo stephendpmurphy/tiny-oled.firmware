@@ -22,6 +22,10 @@
     SOFTWARE.
 ****************************************************************************/
 
+/*! @file main.h
+ * @brief Heder file for the tiny-oled firmware
+ */
+
 #ifndef _MAIN_H_
 #define _MAIN_H_
 

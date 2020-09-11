@@ -22,6 +22,10 @@
     SOFTWARE.
 ****************************************************************************/
 
+/*! @file pins.h
+ * @brief Macro definitions for our GPIO pins
+ */
+
 #ifndef _PINS_H_
 #define _PINS_H_
 

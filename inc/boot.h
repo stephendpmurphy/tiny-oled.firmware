@@ -22,6 +22,10 @@
     SOFTWARE.
 ****************************************************************************/
 
+/*! @file boot.h
+ * @brief Header file for the bootloader
+ */
+
 #ifndef _BOOT_H_
 #define _BOOT_H_
 

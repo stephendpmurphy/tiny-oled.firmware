@@ -22,6 +22,10 @@
     SOFTWARE.
 ****************************************************************************/
 
+/*! @file spi.c
+ * @brief Module to init, read, and write data via the AVR SPI module
+ */
+
 #include <avr/io.h>
 #include <stdint.h>
 #include <string.h>
@@ -29,6 +33,9 @@
 #include "spi.h"
 #include "pins.h"
 
+/*!
+ * @brief This API initiliazes the AVR SPI module.
+ */
 void spi_init(void) {
 
     // Set MOSI and SCK as outputs
@@ -60,6 +67,9 @@ void spi_init(void) {
     SPCR |= (1 << SPE) | (0x01 << MSTR); // SPI Enable | Master Mode
 }
 
+/*!
+ * @brief This API writes data via the AVR SPI module.
+ */
 uint8_t spi_write(uint8_t *buf, uint8_t len) {
 
     uint8_t tx_count = 0;
@@ -83,6 +93,9 @@ uint8_t spi_write(uint8_t *buf, uint8_t len) {
     return EXIT_SUCCESS;
 }
 
+/*!
+ * @brief This API reads data via the AVR SPI module.
+ */
 uint8_t spi_read(uint8_t *buf, uint8_t len) {
 
     uint8_t rx_count = 0;
@@ -108,6 +121,9 @@ uint8_t spi_read(uint8_t *buf, uint8_t len) {
     return EXIT_SUCCESS;
 }
 
+/*!
+ * @brief This API asserts the CS line for our desired device.
+ */
 void spi_assertCS(volatile uint8_t *port, uint8_t pin, uint8_t val) {
 
     if( val ) {
