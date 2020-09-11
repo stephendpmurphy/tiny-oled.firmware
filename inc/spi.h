@@ -28,5 +28,6 @@
 void spi_init(void);
 uint8_t spi_write(uint8_t *buf,  uint8_t len);
 uint8_t spi_read(uint8_t *buf,  uint8_t len);
+void spi_assertCS(volatile uint8_t *port, uint8_t pin, uint8_t val);
 
 #endif // _SPI_H_

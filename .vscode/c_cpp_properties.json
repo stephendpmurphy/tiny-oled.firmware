@@ -4,8 +4,9 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/**",
-                "/usr/lib/avr/include/**"
+                "/usr/lib/avr/**"
             ],
+            "defines": ["__AVR_ATmega32U4__"],
             "compilerPath": "/usr/bin/avr-gcc",
             "intelliSenseMode": "gcc-x64",
             "cStandard": "c99"
