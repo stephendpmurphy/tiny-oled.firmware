@@ -175,7 +175,12 @@ void display_init(void) {
     u8g2_Setup_ssd1306_128x32_univision_1(&u8g2, U8G2_R0, (u8x8_msg_cb)u8x8_byte_4wire_sw_spi_avr, (u8x8_msg_cb)u8g2_gpio_and_delay_avr);
     u8g2_InitDisplay(&u8g2);
     u8g2_SetPowerSave(&u8g2, 0);
+}
 
+/*!
+ * @brief This API displays the splash screen with our project name and username.
+ */
+void display_splash(void) {
     u8g2_FirstPage(&u8g2);
     do
     {
