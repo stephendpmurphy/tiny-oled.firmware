@@ -74,6 +74,7 @@ static void updateDisplay(void) {
     // Based on which state we are, display the appropriate screen
     switch( Device.state ) {
         case DEV_STATE_SPLASH:
+            display_splash();
             break;
 
         case DEV_STATE_CLIMATE:

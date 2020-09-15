@@ -41,6 +41,15 @@
 void display_init(void);
 
 /*!
+ * @brief This API displays the splash screen with our project name and username.
+ *
+ * @param void
+ *
+ * @return void
+ */
+void display_splash(void);
+
+/*!
  * @brief This API displays the climate screen with our temp, humidity and pressure
  * values.
  *
