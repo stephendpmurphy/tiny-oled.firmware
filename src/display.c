@@ -217,3 +217,23 @@ void display_climate(long int temp, long int humidity, long int pressure) {
         u8g2_DrawStr(&u8g2, 0, 30, str);
     } while (u8g2_NextPage(&u8g2));
 }
+
+void display_telem(int16_t gyro_x, int16_t gyro_y, int16_t gyro_z) {
+    char str[64] = {0x00};
+
+    u8g2_FirstPage(&u8g2);
+    do
+    {
+        u8g2_SetFont(&u8g2, u8g2_font_7x13B_tf);
+
+        sprintf(str, "x: %d", gyro_x);
+        u8g2_DrawStr(&u8g2, 0, 14, str);
+
+        sprintf(str, "y: %d", gyro_y);
+        u8g2_DrawStr(&u8g2, 64, 14, str);
+
+        sprintf(str, "z: %d", gyro_z);
+        u8g2_DrawStr(&u8g2, 0, 30, str);
+
+    } while (u8g2_NextPage(&u8g2));
+}

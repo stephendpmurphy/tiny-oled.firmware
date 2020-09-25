@@ -61,4 +61,6 @@ void display_splash(void);
  */
 void display_climate(long int temp, long int humidity, long int pressure);
 
+void display_telem(int16_t gyro_x, int16_t gyro_y, int16_t gyro_z);
+
 #endif // _DISPLAY_H_

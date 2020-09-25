@@ -51,6 +51,7 @@ SRC_APP =	$(wildcard ./src/*.c) \
 			$(wildcard ./submodule/avr-ws2812/src/*.c) \
 			$(wildcard ./submodule/u8g2/csrc/*.c) \
 			$(wildcard ./submodule/bme280_driver/*.c) \
+			$(wildcard ./submodule/icm20948/src/*.c)
 
 # Boot source
 SRC_BOOT=./src/boot.c \
@@ -60,6 +61,7 @@ INC=-I./inc \
 	-I./submodule/avr-ws2812/inc \
 	-I./submodule/u8g2/csrc \
 	-I./submodule/bme280_driver \
+	-I./submodule/icm20948/inc \
 
 all:
 	mkdir -p ${OUTPUT_DIR}

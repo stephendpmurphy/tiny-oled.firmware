@@ -63,6 +63,11 @@ void spi_init(void) {
     // Set it high
     SPI_BME280_CS_PORT |= (0x01 << SPI_BME280_CS_PIN);
 
+    // ICM20948 Chip Select
+    SPI_ICM20948_CS_DDR |= (0x01 << SPI_ICM20948_CS_PIN);
+    // Set it high
+    SPI_ICM20948_CS_PORT |= (0x01 << SPI_ICM20948_CS_PIN);
+
     // SPI Register Init
     SPCR |= (1 << SPE) | (0x01 << MSTR); // SPI Enable | Master Mode
 }

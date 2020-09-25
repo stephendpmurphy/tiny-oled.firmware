@@ -22,59 +22,15 @@
     SOFTWARE.
 ****************************************************************************/
 
-/*! @file pins.h
- * @brief Macro definitions for our GPIO pins
- */
+#ifndef _TELEMETRY_H_
+#define _TELEMETRY_H_
 
-#ifndef _PINS_H_
-#define _PINS_H_
+#include <stdint.h>
+#include "icm20948_api.h"
 
-#include <avr/io.h>
+int8_t telemetry_init(void);
+int8_t telemetry_getData(void);
 
-// SPI Pin definitions
-#define SPI_MOSI_DDR        (DDRB)
-#define SPI_MOSI_PIN        (2)
+extern icm20948_gyro_t gyro_data;
 
-#define SPI_SCK_DDR         (DDRB)
-#define SPI_SCK_PIN         (1)
-
-// AVR SPI SS pin
-#define SPI_SS_DDR          (DDRB)
-#define SPI_SS_PORT         (PORTB)
-#define SPI_SS_PIN          (0)
-
-// SD CS
-#define SPI_SD_CS_DDR       (DDRB)
-#define SPI_SD_CS_PORT      (PORTB)
-#define SPI_SD_CS_PIN       (3)
-
-// Display CS
-#define SPI_DISP_CS_DDR     (DDRD)
-#define SPI_DISP_CS_PORT    (PORTD)
-#define SPI_DISP_CS_PIN     (6)
-
-// BME280 CS
-#define SPI_BME280_CS_DDR   (DDRB)
-#define SPI_BME280_CS_PORT  (PORTB)
-#define SPI_BME280_CS_PIN   (5)
-
-// ICM20948 CS
-#define SPI_ICM20948_CS_DDR     (DDRB)
-#define SPI_ICM20948_CS_PORT    (PORTB)
-#define SPI_ICM20948_CS_PIN     (6)
-
-// SSD1306 Pin definitions
-#define DISP_RES_DDR        (DDRB)
-#define DISP_RES_PORT       (PORTB)
-#define DISP_RES_PIN        (4)
-
-#define DISP_DC_DDR         (DDRD)
-#define DISP_DC_PORT        (PORTD)
-#define DISP_DC_PIN         (7)
-
-// LED Status Pin definitions
-#define LED_STAT_DDR        (DDRD)
-#define LED_STAT_PORT       (PORTD)
-#define LED_STAT_PIN        (4)
-
-#endif // _PINS_H_
+#endif // _TELEMETRY_H_
