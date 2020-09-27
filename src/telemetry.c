@@ -32,7 +32,7 @@
 icm20948_gyro_t gyro_data;
 icm20948_accel_t accel_data;
 
-static int8_t usr_write(uint8_t addr, uint8_t *data, uint32_t len) {
+static int8_t usr_write(const uint8_t addr, const uint8_t *data, const uint32_t len) {
 
     // Check the input parameters
     if( data == NULL )
@@ -54,7 +54,7 @@ static int8_t usr_write(uint8_t addr, uint8_t *data, uint32_t len) {
     return ICM20948_RET_OK;
 }
 
-static int8_t usr_read(uint8_t addr, uint8_t *data, uint32_t len) {
+static int8_t usr_read(const uint8_t addr, uint8_t *data, const uint32_t len) {
     // Check the input parameters
     if( data == NULL )
     {

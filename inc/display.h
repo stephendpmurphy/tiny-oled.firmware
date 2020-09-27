@@ -59,7 +59,7 @@ void display_splash(void);
  *
  * @return void
  */
-void display_climate(long int temp, long int humidity, long int pressure);
+void display_climate(const long int temp, const long int humidity, const long int pressure);
 
 /*!
  * @brief This API displays the telemetry screen with our x, y, and z values
@@ -71,6 +71,6 @@ void display_climate(long int temp, long int humidity, long int pressure);
  *
  * @return void
  */
-void display_telem(int16_t x_val, int16_t y_val, int16_t z_val);
+void display_telem(const int16_t x_val, const int16_t y_val, const int16_t z_val);
 
 #endif // _DISPLAY_H_
