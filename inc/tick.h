@@ -55,6 +55,6 @@ uint32_t tick_getTick(void);
  *
  * @returns Returns the time since the passed in ref value.
  */
-uint32_t tick_timeSince(uint32_t ref);
+uint32_t tick_timeSince(const uint32_t ref);
 
 #endif // _TICK_H_

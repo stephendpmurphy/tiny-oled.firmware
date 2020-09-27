@@ -199,7 +199,7 @@ void display_splash(void) {
  * @brief This API displays the climate screen with our temp, humidity and pressure
  * values.
  */
-void display_climate(long int temp, long int humidity, long int pressure) {
+void display_climate(const long int temp, const long int humidity, const long int pressure) {
     char str[64] = {0x00};
 
     u8g2_FirstPage(&u8g2);
@@ -222,7 +222,7 @@ void display_climate(long int temp, long int humidity, long int pressure) {
  * @brief This API displays the telemetry screen with our x, y, and z values
  * values.
  */
-void display_telem(int16_t x_val, int16_t y_val, int16_t z_val) {
+void display_telem(const int16_t x_val, const int16_t y_val, const int16_t z_val) {
     char str[64] = {0x00};
 
     u8g2_FirstPage(&u8g2);

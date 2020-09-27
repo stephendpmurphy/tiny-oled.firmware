@@ -75,7 +75,7 @@ void spi_init(void) {
 /*!
  * @brief This API writes data via the AVR SPI module.
  */
-uint8_t spi_write(uint8_t *buf, uint8_t len) {
+uint8_t spi_write(const uint8_t *buf, const uint8_t len) {
 
     uint8_t tx_count = 0;
 
@@ -101,7 +101,7 @@ uint8_t spi_write(uint8_t *buf, uint8_t len) {
 /*!
  * @brief This API reads data via the AVR SPI module.
  */
-uint8_t spi_read(uint8_t *buf, uint8_t len) {
+uint8_t spi_read(uint8_t *buf, const uint8_t len) {
 
     uint8_t rx_count = 0;
 
@@ -129,7 +129,7 @@ uint8_t spi_read(uint8_t *buf, uint8_t len) {
 /*!
  * @brief This API asserts the CS line for our desired device.
  */
-void spi_assertCS(volatile uint8_t *port, uint8_t pin, uint8_t val) {
+void spi_assertCS(volatile uint8_t *port, const uint8_t pin, const uint8_t val) {
 
     if( val ) {
         *port |= (0x01 << pin);

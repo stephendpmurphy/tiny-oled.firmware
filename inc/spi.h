@@ -46,7 +46,7 @@ void spi_init(void);
  *
  * @return Returns the state of the SPI write
  */
-uint8_t spi_write(uint8_t *buf,  uint8_t len);
+uint8_t spi_write(const uint8_t *buf, const uint8_t len);
 
 /*!
  * @brief This API reads data via the AVR SPI module.
@@ -56,7 +56,7 @@ uint8_t spi_write(uint8_t *buf,  uint8_t len);
  *
  * @return Returns the state of the SPI read
  */
-uint8_t spi_read(uint8_t *buf,  uint8_t len);
+uint8_t spi_read(uint8_t *buf,  const uint8_t len);
 
 /*!
  * @brief This API asserts the CS line for our desired device.
@@ -67,6 +67,6 @@ uint8_t spi_read(uint8_t *buf,  uint8_t len);
  *
  * @return void
  */
-void spi_assertCS(volatile uint8_t *port, uint8_t pin, uint8_t val);
+void spi_assertCS(volatile uint8_t *port, const uint8_t pin, const uint8_t val);
 
 #endif // _SPI_H_

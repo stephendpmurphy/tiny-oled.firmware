@@ -63,7 +63,7 @@ uint32_t tick_getTick(void) {
 /*!
  * @brief This API returns time since a passed in ref time
  */
-uint32_t tick_timeSince(uint32_t ref) {
+uint32_t tick_timeSince(const uint32_t ref) {
     // If the ref time given is a time
     // greater than our current tick val
     // return 0.
