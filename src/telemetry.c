@@ -30,6 +30,7 @@
 #include "pins.h"
 
 icm20948_gyro_t gyro_data;
+icm20948_accel_t accel_data;
 
 static int8_t usr_write(uint8_t addr, uint8_t *data, uint32_t len) {
 
@@ -89,6 +90,7 @@ int8_t telemetry_init(void) {
 
     if( ret == ICM20948_RET_OK ) {
         settings.gyro_en = ICM20948_GYRO_ENABLE;
+        settings.accel_en = ICM20948_ACCEL_ENABLE;
         ret = icm20948_applySettings(&settings);
     }
 
@@ -96,5 +98,10 @@ int8_t telemetry_init(void) {
 }
 
 int8_t telemetry_getData(void) {
-    return icm20948_getGyroData(&gyro_data);
+    icm20948_return_code_t ret = ICM20948_RET_OK;
+
+    ret |= icm20948_getGyroData(&gyro_data);
+    ret |= icm20948_getAccelData(&accel_data);
+
+    return ret;
 }

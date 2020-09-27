@@ -32,5 +32,6 @@ int8_t telemetry_init(void);
 int8_t telemetry_getData(void);
 
 extern icm20948_gyro_t gyro_data;
+extern icm20948_accel_t accel_data;
 
 #endif // _TELEMETRY_H_

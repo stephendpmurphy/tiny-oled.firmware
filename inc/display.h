@@ -61,6 +61,16 @@ void display_splash(void);
  */
 void display_climate(long int temp, long int humidity, long int pressure);
 
-void display_telem(int16_t gyro_x, int16_t gyro_y, int16_t gyro_z);
+/*!
+ * @brief This API displays the telemetry screen with our x, y, and z values
+ * values.
+ *
+ * @param[in] x_val : X value for the telemetry data
+ * @param[in] y_val : Y value for the telemetry data
+ * @param[in] z_val : Z value for the telemetry data
+ *
+ * @return void
+ */
+void display_telem(int16_t x_val, int16_t y_val, int16_t z_val);
 
 #endif // _DISPLAY_H_

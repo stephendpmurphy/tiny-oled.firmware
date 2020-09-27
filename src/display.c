@@ -218,7 +218,11 @@ void display_climate(long int temp, long int humidity, long int pressure) {
     } while (u8g2_NextPage(&u8g2));
 }
 
-void display_telem(int16_t gyro_x, int16_t gyro_y, int16_t gyro_z) {
+/*!
+ * @brief This API displays the telemetry screen with our x, y, and z values
+ * values.
+ */
+void display_telem(int16_t x_val, int16_t y_val, int16_t z_val) {
     char str[64] = {0x00};
 
     u8g2_FirstPage(&u8g2);
@@ -226,13 +230,13 @@ void display_telem(int16_t gyro_x, int16_t gyro_y, int16_t gyro_z) {
     {
         u8g2_SetFont(&u8g2, u8g2_font_7x13B_tf);
 
-        sprintf(str, "x: %d", gyro_x);
+        sprintf(str, "x: %d", x_val);
         u8g2_DrawStr(&u8g2, 0, 14, str);
 
-        sprintf(str, "y: %d", gyro_y);
+        sprintf(str, "y: %d", y_val);
         u8g2_DrawStr(&u8g2, 64, 14, str);
 
-        sprintf(str, "z: %d", gyro_z);
+        sprintf(str, "z: %d", z_val);
         u8g2_DrawStr(&u8g2, 0, 30, str);
 
     } while (u8g2_NextPage(&u8g2));

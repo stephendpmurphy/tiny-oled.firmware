@@ -59,8 +59,6 @@ typedef struct {
 /*! @brief Structure holding our Device state and ref times */
 static strDevice_t Device;
 
-int8_t telem_status;
-
 /*!
  * @brief This function updates the display based on the current device state
  * @param void
@@ -82,7 +80,7 @@ static void updateDisplay(void) {
             break;
 
         case DEV_STATE_TELEM:
-            display_telem(gyro_data.x, gyro_data.y, gyro_data.z);
+            display_telem(accel_data.x, accel_data.y, accel_data.z);
             break;
 
         default:
@@ -133,7 +131,7 @@ int main(void) {
     // Driver init
     display_init();
     climate_init();
-    telem_status = telemetry_init();
+    telemetry_init();
 
     Device.state = DEV_STATE_SPLASH;
     Device.state_refTime = tick_getTick();
