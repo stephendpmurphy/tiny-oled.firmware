@@ -34,8 +34,8 @@
 #include "spi.h"
 #include "avr_ws2812.h"
 #include "display.h"
-#include "bme280.h"
 #include "climate.h"
+#include "telemetry.h"
 #include "tick.h"
 
 /*! @brief Enum for the different states our device coule be in */
@@ -61,9 +61,7 @@ static strDevice_t Device;
 
 /*!
  * @brief This function updates the display based on the current device state
- *
  * @param void
- *
  * @returns void
  */
 static void updateDisplay(void) {
@@ -82,6 +80,7 @@ static void updateDisplay(void) {
             break;
 
         case DEV_STATE_TELEM:
+            display_telem(accel_data.x, accel_data.y, accel_data.z);
             break;
 
         default:
@@ -92,9 +91,7 @@ static void updateDisplay(void) {
 /*!
  * @brief This functions runs state specific code based on the current
  * device state.
- *
  * @param void
- *
  * @returns void
  */
 static void dev_sm(void) {
@@ -102,15 +99,18 @@ static void dev_sm(void) {
         case DEV_STATE_SPLASH:
             // Check if we have been in the splash long enough. If so, transition to climate
             if( tick_timeSince(Device.state_refTime) > SPLASH_DISP_TIME ) {
-                Device.state = DEV_STATE_CLIMATE;
+                Device.state = DEV_STATE_TELEM;
                 Device.state_refTime = tick_getTick();
             }
             break;
 
         case DEV_STATE_CLIMATE:
+            // Retrieve device data
+            climate_getData();
             break;
 
         case DEV_STATE_TELEM:
+            telemetry_getData();
             break;
 
         default:
@@ -120,9 +120,7 @@ static void dev_sm(void) {
 
 /*!
  * @brief Main function and entry point for the firmware
- *
  * @param void
- *
  * @return void
  */
 int main(void) {
@@ -133,14 +131,12 @@ int main(void) {
     // Driver init
     display_init();
     climate_init();
+    telemetry_init();
 
     Device.state = DEV_STATE_SPLASH;
     Device.state_refTime = tick_getTick();
 
     while(1) {
-        // Retrieve device data
-        climate_getData();
-
         // Update the LED UI
 
         // Handle button events
