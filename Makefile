@@ -34,6 +34,7 @@ OUTPUT_DIR=./output
 
 # Macro Definitions
 F_CPU=8000000
+F_USB=${F_CPU}
 
 # Toolchain
 TOOLCHAIN_PREFIX=avr
@@ -43,25 +44,35 @@ OBJDUMP=${TOOLCHAIN_PREFIX}-objdump
 SIZE=${TOOLCHAIN_PREFIX}-size
 
 # Compiler Options
-CFLAGS = -Wall -gstabs -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -Os -mmcu=${MCU} -DF_CPU=${F_CPU}
+CFLAGS = -Wall -gstabs -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -Os -mmcu=${MCU} -DF_CPU=${F_CPU} -DF_USB=${F_USB}
 CFLAGS += -ffunction-sections -fdata-sections -Wl,--gc-sections
 
 # App source
 SRC_APP =	$(wildcard ./src/*.c) \
+			$(wildcard ./src/usb/*.c) \
 			$(wildcard ./submodule/avr-ws2812/src/*.c) \
 			$(wildcard ./submodule/u8g2/csrc/*.c) \
 			$(wildcard ./submodule/bme280_driver/*.c) \
-			$(wildcard ./submodule/icm20948/src/*.c)
+			$(wildcard ./submodule/icm20948/src/*.c) \
+			$(wildcard ./submodule/lufa/LUFA/Platform/UC3/*.c) \
+			$(wildcard ./submodule/lufa/LUFA/Drivers/USB/Class/Device/*.c) \
+			$(wildcard ./submodule/lufa/LUFA/Drivers/USB/Core/*.c) \
+			$(wildcard ./submodule/lufa/LUFA/Drivers/USB/Core/AVR8/*.c) \
 
 # Boot source
 SRC_BOOT=./src/boot.c \
 
 # Includes
 INC=-I./inc \
+	-I./inc/usb \
 	-I./submodule/avr-ws2812/inc \
 	-I./submodule/u8g2/csrc \
 	-I./submodule/bme280_driver \
 	-I./submodule/icm20948/inc \
+	-I./submodule/lufa \
+	-I./submodule/lufa/LUFA \
+	-I./submodule/lufa/LUFA/Drivers/USB \
+	-I./submodule/lufa/LUFA/Platform \
 
 all:
 	mkdir -p ${OUTPUT_DIR}

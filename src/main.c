@@ -37,6 +37,7 @@
 #include "climate.h"
 #include "telemetry.h"
 #include "tick.h"
+#include "usb.h"
 
 /*! @brief Enum for the different states our device coule be in */
 typedef enum {
@@ -49,9 +50,11 @@ typedef enum {
 typedef struct {
     eState_t state;
     uint32_t state_refTime;
+    uint32_t telem_data_refTime;
     uint32_t disp_refTime;
 } strDevice_t;
 
+#define TELEM_DATA_TIME     (30)  // ms
 #define SPLASH_DISP_TIME    (1500)  // ms
 #define STAT_LED_FLASH_RATE (1000)  // ms
 #define DISP_UPDATE_RATE    (30)    // ms
@@ -95,6 +98,8 @@ static void updateDisplay(void) {
  * @returns void
  */
 static void dev_sm(void) {
+    char dataString[64] = {0};
+
     switch( Device.state ) {
         case DEV_STATE_SPLASH:
             // Check if we have been in the splash long enough. If so, transition to climate
@@ -110,7 +115,18 @@ static void dev_sm(void) {
             break;
 
         case DEV_STATE_TELEM:
+            // Retrieve our telemetry data
             telemetry_getData();
+
+            // If we are due for it, print the data out over USB
+            if( tick_timeSince(Device.telem_data_refTime) > TELEM_DATA_TIME ) {
+                memset(dataString, 0x00, sizeof(dataString));
+                sprintf(dataString, "\33[2Kaccel x:%d y:%d z:%d\r",
+                    accel_data.x, accel_data.y, accel_data.z);
+
+                usb_sendString(dataString, sizeof(dataString));
+                Device.telem_data_refTime = tick_getTick();
+            }
             break;
 
         default:
@@ -132,11 +148,15 @@ int main(void) {
     display_init();
     climate_init();
     telemetry_init();
+    usb_init();
 
     Device.state = DEV_STATE_SPLASH;
     Device.state_refTime = tick_getTick();
 
     while(1) {
+        // Run the USB task
+        usb_update();
+
         // Update the LED UI
 
         // Handle button events
@@ -147,6 +167,7 @@ int main(void) {
         // Handle the oled display
         updateDisplay();
 
+        // Throttle the application a bit
         _delay_ms(10);
     }
 }
