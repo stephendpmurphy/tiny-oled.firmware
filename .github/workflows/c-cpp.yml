@@ -17,7 +17,13 @@ jobs:
       run: git submodule update --init --recursive
     - name: Retrieve AVR-GCC Tools
       run: sudo apt-get install gcc-avr avr-libc
+    - name: Install CMake
+      run: sudo apt-get install cmake
     - name: Compile
-      run: make
-    # - name: Run Unit Tests
-    #   run: sudo apt-get install ruby ; sudo gem install ceedling ; make test
+      run: |
+        chmod +x avr-toolchain.sh
+        ./avr-toolchain.sh
+        mkdir build
+        cd build
+        cmake ..
+        make -j8
