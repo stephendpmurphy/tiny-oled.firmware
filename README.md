@@ -30,20 +30,19 @@ The project for the hardware can be found in the [tiny-oled.hardware](https://gi
 
 #### Cloning & Retrieving source
 Begin by cloning the repository:
-```
+```bash
 git clone https://github.com/stephendpmurphy/tiny-oled.firmware.git
 ```
 
 Checkout submodules:
-```
+```bash
 git submodule --init --recursive
 ```
 
 #### Installing Unity & CMock Unit Test Framework
 This project uses Unity for Unit Testing and CMock to mock the hardware interfaces that we will be communicating with.</br>
 First you will need to install Ruby so we can access *gem* to then retrieve the *Ceedling* tool.
-
-```
+```bash
 $ sudo apt install ruby
 $ sudo gem install ceedling
 ```
@@ -52,13 +51,31 @@ $ sudo gem install ceedling
 
 #### Installing AVR Tools & Utilities
 The AVR toolchain is needed for compiling and *avrdude* for flashing AVR targets. To install the necessary tools:
-```
+```bash
 $ sudo apt-get install gcc-avr avr-libc avrdude
+```
+
+#### Installing CMake
+This project uses CMake as it's build configurator, and it must be ran at least once to setup the Makefile and build environment. To install CMake:
+```bash
+$ sudo apt-get install cmake
+```
+
+# Initializing CMake
+CMake will have to be initialized at least once after cloning the project. Once completed, all build and documenation commands must be ran from the ***build/*** folder. The developer will also need to ***source*** the AVR Toolchain before beginning the CMake setup. To setup the AVR-Toolchain:
+```bash
+$ ./avr-toolchain.sh
+```
+
+To setup CMake:
+```bash
+$ mkdir build && cd build
+$ cmake ..
 ```
 
 # Documentation
 Documentation is handled using Doxygen. To generate the HTML documentation:
-```
+```bash
 $ make docs
 ```
 The generated documenation can then be found at ./doc/html/index.html
@@ -66,52 +83,47 @@ The generated documenation can then be found at ./doc/html/index.html
 # Compile, Test, Flash and AVR Fuses
 #### Compiling
 To compile the application:
-```
+```bash
 $ make -j8
 ```
 
-To compile the bootloader:
-```
-$ make boot
-```
-
-To clean the build *ouput/* directory:
-```
+To clean the build *build/* directory:
+```bash
 $ make clean
 ```
 
 #### Executing unit tests
 
-To execute all unit tests. Move to the *tests* directory and executing the *ceedling* command:
-```
+~~To execute all unit tests. Move to the *tests* directory and executing the *ceedling* command:~~
+```bash
 $ cd tests/
 $ ceedling
 ```
 
-To execute a specific test. Execute the the *ceedling* command with the *test:$UNIT_TEST_NAME* option:
-```
+~~To execute a specific test. Execute the the *ceedling* command with the *test:$UNIT_TEST_NAME* option:~~
+```bash
 $ cd tests/
 $ cd ceedling test:test_boot
 ```
 
-Alternatively, you can execute all tests from the Makefile:
-```
+~~Alternatively, you can execute all tests from the Makefile:~~
+```bash
 $ make test
 ```
 
 #### Flashing
 To erase the chip:
-```
-$ make erase_chip
+```bash
+$ make erase
 ```
 
 To flash the application .hex:
-```
+```bash
 $ make flash
 ```
 
-To flash the bootloader .hex:
-```
+~~To flash the bootloader .hex:~~
+```bash
 $ make flash_boot
 ```
 
@@ -119,11 +131,11 @@ $ make flash_boot
 Fuses are a set of configuration bytes in all AVR hardware that tell the chip things like what clock input and divider to use, enabling brown-out detection, enabling the Watchdog, and a few other features. The atmega32u4 has an internal 8Mhz clock that is then divided down by 8, to give a CPU clock of 1Mhz out of the box. We want to run the part faster however, so we need to disable the Clock divider bit in the lower fuse (lfuse) to give us a CPU clock of 8Mhz. You can calculate the correct value of the fuses using the [AVR Fuse Calc](https://www.engbedded.com/fusecalc/) or simply reference the Fuse section of the datasheet and calculate the correct value yourself.
 
 To simplify things. You can execute the **write_fuses** option with **make** to write the appropriate fuse values for this project.
-```
+```bash
 $ make write_fuses
 ```
 
 And you can execute the **read_fuses** option with **make** to read out the lfuse, hfuse and efuse values into their respective .txt files
-```
+```bash
 $ make read_fuses
 ```

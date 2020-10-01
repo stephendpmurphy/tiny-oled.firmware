@@ -124,7 +124,7 @@ static void dev_sm(void) {
                 sprintf(dataString, "\33[2Kaccel x:%d y:%d z:%d\r",
                     accel_data.x, accel_data.y, accel_data.z);
 
-                usb_sendString(dataString, sizeof(dataString));
+                usb_sendString((const uint8_t *)dataString, sizeof(dataString));
                 Device.telem_data_refTime = tick_getTick();
             }
             break;
