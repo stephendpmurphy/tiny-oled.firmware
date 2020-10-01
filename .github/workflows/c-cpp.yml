@@ -22,7 +22,7 @@ jobs:
     - name: Compile
       run: |
         chmod +x avr-toolchain.sh
-        ./avr-toolchain.sh
+        source avr-toolchain.sh
         mkdir build
         cd build
         cmake ..
