@@ -34,7 +34,7 @@
 /*!
  * @brief This API initializes the climate module and sets up the BME280 register
  *
- * @param void
+ * @param[in] void
  *
  * @return Returns the status of initializing the BME280 driver
  */
@@ -43,7 +43,7 @@ int8_t climate_init(void);
 /*!
  * @brief This API retrieves temp, pressure, and humidity data from the BME280
  *
- * @param void
+ * @param[in] void
  *
  * @return Retruns the status of retreiving data from the BME280
  */

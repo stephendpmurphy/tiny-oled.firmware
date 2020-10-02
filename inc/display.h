@@ -34,18 +34,18 @@
  * @brief This API initializes the u8g2 instance and writes the tiny-oled splash screen
  * onto the display.
  *
- * @param void
+ * @param[in] void
  *
- * @return void
+ * @return Returns void
  */
 void display_init(void);
 
 /*!
  * @brief This API displays the splash screen with our project name and username.
  *
- * @param void
+ * @param[in] void
  *
- * @return void
+ * @return Returns void
  */
 void display_splash(void);
 
@@ -57,7 +57,7 @@ void display_splash(void);
  * @param[in] humidity : Humidity reading to be displayed
  * @param[in] pressure : Pressure reading to be displayed
  *
- * @return void
+ * @return Returns void
  */
 void display_climate(const long int temp, const long int humidity, const long int pressure);
 
@@ -69,7 +69,7 @@ void display_climate(const long int temp, const long int humidity, const long in
  * @param[in] y_val : Y value for the telemetry data
  * @param[in] z_val : Z value for the telemetry data
  *
- * @return void
+ * @return Returns void
  */
 void display_telem(const int16_t x_val, const int16_t y_val, const int16_t z_val);
 

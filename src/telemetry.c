@@ -29,9 +29,20 @@
 #include "spi.h"
 #include "pins.h"
 
+/*! @brief ICM20948 captured gyro data */
 icm20948_gyro_t gyro_data;
+/*! @brief ICM20948 captured accel data */
 icm20948_accel_t accel_data;
 
+/*!
+ * @brief User provided API for writing data via SPI
+ *
+ * @param[in] addr: The register address which you would like to write to
+ * @param[in] *buf : Pointer to a buffer of data to be written
+ * @param[in] len : Length of data to be written.
+ *
+ * @return Returns the state of the SPI write
+ */
 static int8_t usr_write(const uint8_t addr, const uint8_t *data, const uint32_t len) {
 
     // Check the input parameters
@@ -54,6 +65,15 @@ static int8_t usr_write(const uint8_t addr, const uint8_t *data, const uint32_t 
     return ICM20948_RET_OK;
 }
 
+/*!
+ * @brief User provided API for reading data via SPI
+ *
+ * @param[in] addr: The register address which you would like to read from
+ * @param[in] *buf : Pointer to a buffer where read data should be placed
+ * @param[in] len : Length of data to be read
+ *
+ * @return Returns the state of the SPI read
+ */
 static int8_t usr_read(const uint8_t addr, uint8_t *data, const uint32_t len) {
     // Check the input parameters
     if( data == NULL )
@@ -75,6 +95,13 @@ static int8_t usr_read(const uint8_t addr, uint8_t *data, const uint32_t len) {
     return ICM20948_RET_OK;
 }
 
+/*!
+ * @brief User provided API for delaying in microseconds
+ *
+ * @param[in] period: The duration in which we should delay in microseconds
+ *
+ * @return Returns the state of the SPI write
+ */
 static void usr_delay_us(uint32_t period) {
     while( period > 0) {
         _delay_us(1);
@@ -82,6 +109,9 @@ static void usr_delay_us(uint32_t period) {
     }
 }
 
+/*!
+ * @brief This API initializes the telemetry module
+ */
 int8_t telemetry_init(void) {
     icm20948_return_code_t ret = ICM20948_RET_OK;
     icm20948_settings_t settings;
@@ -97,6 +127,9 @@ int8_t telemetry_init(void) {
     return ret;
 }
 
+/*!
+ * @brief This API retrieves a sample of data from the telemetry module
+ */
 int8_t telemetry_getData(void) {
     icm20948_return_code_t ret = ICM20948_RET_OK;
 

@@ -28,10 +28,27 @@
 #include <stdint.h>
 #include "icm20948_api.h"
 
+/*!
+ * @brief This API initializes the telemetry module
+ *
+ * @param[in] void
+ *
+ * @return Returns the telemetry init status
+ */
 int8_t telemetry_init(void);
+
+/*!
+ * @brief This API retrieves a sample of data from the telemetry module
+ *
+ * @param[in] void
+ *
+ * @return Returns the telemetry status from retrieving a data sample
+ */
 int8_t telemetry_getData(void);
 
+/*! @brief ICM20948 captured gyro data */
 extern icm20948_gyro_t gyro_data;
+/*! @brief ICM20948 captured accel data */
 extern icm20948_accel_t accel_data;
 
 #endif // _TELEMETRY_H_

@@ -54,7 +54,7 @@ typedef struct {
     uint32_t disp_refTime;
 } strDevice_t;
 
-#define TELEM_DATA_TIME     (30)  // ms
+#define TELEM_DATA_TIME     (30)    // ms
 #define SPLASH_DISP_TIME    (1500)  // ms
 #define STAT_LED_FLASH_RATE (1000)  // ms
 #define DISP_UPDATE_RATE    (30)    // ms
@@ -64,8 +64,10 @@ static strDevice_t Device;
 
 /*!
  * @brief This function updates the display based on the current device state
- * @param void
- * @returns void
+ *
+ * @param[in] void
+ *
+ * @returns Returns void
  */
 static void updateDisplay(void) {
     // Check if we are due for refreshing the display
@@ -94,8 +96,10 @@ static void updateDisplay(void) {
 /*!
  * @brief This functions runs state specific code based on the current
  * device state.
- * @param void
- * @returns void
+ *
+ * @param[in] void
+ *
+ * @returns Returns void
  */
 static void dev_sm(void) {
     char dataString[64] = {0};
@@ -136,8 +140,10 @@ static void dev_sm(void) {
 
 /*!
  * @brief Main function and entry point for the firmware
- * @param void
- * @return void
+ *
+ * @param[in] void
+ *
+ * @return Returns void
  */
 int main(void) {
     // Board init

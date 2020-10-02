@@ -31,8 +31,10 @@
 
 /*!
  * @brief Main function and entry point for the bootloader
- * @param void
- * @return void
+ *
+ * @param[in] void
+ *
+ * @return Returns void
  */
 #ifdef BUILD_BOOTLOADER // Ceedling complains about two definitions of main..
 int main(void) {

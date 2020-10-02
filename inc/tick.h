@@ -32,18 +32,18 @@
 /*!
  * @brief This API initiliazes the tick module and timer
  *
- * @param void
+ * @param[in] void
  *
- * @returns void
+ * @returns Returns void
  */
 void tick_init(void);
 
 /*!
  * @brief This API returns the current tick value
  *
- * @param void
+ * @param[in] void
  *
- * @returns Returns the current tick value
+ * @returns Returns void
  */
 uint32_t tick_getTick(void);
 
