@@ -32,9 +32,9 @@
 /*!
  * @brief This API initiliazes the AVR SPI module.
  *
- * @param void
+ * @param[in] void
  *
- * @return void
+ * @return Returns void
  */
 void spi_init(void);
 
@@ -65,7 +65,7 @@ uint8_t spi_read(uint8_t *buf,  const uint8_t len);
  * @param[in] pin : Which PIN we want to update in the provided PORT
  * @param[in] val : Value to be written to our PIN in the specified PORT
  *
- * @return void
+ * @return Returns void
  */
 void spi_assertCS(volatile uint8_t *port, const uint8_t pin, const uint8_t val);
 

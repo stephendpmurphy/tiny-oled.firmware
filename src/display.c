@@ -39,7 +39,7 @@
  *
  * @param[in] val : Value to write to the RESET pin
  *
- * @return void
+ * @return Returns void
  */
 static void _set_res_pin(uint8_t val);
 
@@ -48,7 +48,7 @@ static void _set_res_pin(uint8_t val);
  *
  * @param[in] val : Value to write to the DC pin
  *
- * @return void
+ * @return Returns void
  */
 static void _set_dc_pin(uint8_t val);
 
