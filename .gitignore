@@ -54,6 +54,7 @@ dkms.conf
 
 # Output folder
 output/
+build/
 
 # Ceedling test output
 tests/build/
@@ -62,3 +63,6 @@ tests/build/
 lfuse.*
 hfuse.*
 efuse.*
+
+# Doxygen output
+doc/

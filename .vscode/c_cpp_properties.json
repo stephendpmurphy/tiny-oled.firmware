@@ -1,0 +1,24 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/inc",
+                "${workspaceFolder}/inc/usb",
+                "${workspaceFolder}/submodule/avr-ws2812/inc",
+                "${workspaceFolder}/submodule/bme280_driver",
+                "${workspaceFolder}/submodule/icm20948/inc",
+                "${workspaceFolder}/submodule/lufa",
+                "${workspaceFolder}/submodule/lufa/LUFA",
+                "${workspaceFolder}/submodule/lufa/LUFA/Drivers/USB",
+                "${workspaceFolder}/submodule/lufa/LUFA/Platform",
+                "/usr/lib/avr/**"
+            ],
+            "defines": ["__AVR_ATmega32U4__"],
+            "compilerPath": "/usr/bin/avr-gcc",
+            "intelliSenseMode": "gcc-x64",
+            "cStandard": "c99"
+        }
+    ],
+    "version": 4
+}

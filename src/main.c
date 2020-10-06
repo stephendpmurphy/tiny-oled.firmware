@@ -3,19 +3,28 @@
     understanding of embedded firmware development.
     Copyright (C) 2020 Stephen Murphy - github.com/stephendpmurphy
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+    The above copyright notice and this permission notice shall be included in all
+    copies or substantial portions of the Software.
 
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    SOFTWARE.
 ****************************************************************************/
+
+/*! @file main.c
+ * @brief Main source for the tiny-oled firmware
+ */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -26,72 +35,147 @@
 #include "avr_ws2812.h"
 #include "pff.h"
 #include "diskio.h"
+#include "display.h"
+#include "climate.h"
+#include "telemetry.h"
+#include "tick.h"
+#include "usb.h"
 
-#define	PIXEL_NUM   (8)
+/*! @brief Enum for the different states our device coule be in */
+typedef enum {
+    DEV_STATE_SPLASH = 0x00,
+    DEV_STATE_CLIMATE,
+    DEV_STATE_TELEM
+} eState_t;
 
-FATFS fs = {0};
+/*! @brief Structure holding our Device state and ref times */
+typedef struct {
+    eState_t state;
+    uint32_t state_refTime;
+    uint32_t telem_data_refTime;
+    uint32_t disp_refTime;
+} strDevice_t;
 
-static void ASSERT(uint8_t res, uint8_t expected) {
-    if(res != expected) {
-        while(1) {
-            for(uint8_t x = res; x > 0; x--)
-            {
-                LED_STAT_PORT |= (1 << LED_STAT_PIN);
-                _delay_ms(250);
-                // Turn off the STAT LED
-                LED_STAT_PORT &= ~(1 << LED_STAT_PIN);
-                // Wait 250 ms
-                _delay_ms(250);
-            }
+#define TELEM_DATA_TIME     (30)    // ms
+#define SPLASH_DISP_TIME    (1500)  // ms
+#define STAT_LED_FLASH_RATE (1000)  // ms
+#define DISP_UPDATE_RATE    (30)    // ms
 
-            _delay_ms(1000);
-        }
+/*! @brief Structure holding our Device state and ref times */
+static strDevice_t Device;
+
+/*!
+ * @brief This function updates the display based on the current device state
+ *
+ * @param[in] void
+ *
+ * @returns Returns void
+ */
+static void updateDisplay(void) {
+    // Check if we are due for refreshing the display
+    if( (Device.disp_refTime + DISP_UPDATE_RATE) > tick_getTick())
+        return;
+
+    // Based on which state we are, display the appropriate screen
+    switch( Device.state ) {
+        case DEV_STATE_SPLASH:
+            display_splash();
+            break;
+
+        case DEV_STATE_CLIMATE:
+            display_climate(climate_data.temperature, climate_data.humidity, climate_data.pressure);
+            break;
+
+        case DEV_STATE_TELEM:
+            display_telem(accel_data.x, accel_data.y, accel_data.z);
+            break;
+
+        default:
+            break;
     }
 }
 
-int main(void) {
-    // uint8_t res;
-    // uint8_t x = 0;
-    // uint8_t i;
-    // ws2812_RGB_t pixels[PIXEL_NUM] = {0};
-	// ws2812_RGB_t p = {0, 100, 0};
-    // ws2812_RGB_t empty = {0,0,0};
+/*!
+ * @brief This functions runs state specific code based on the current
+ * device state.
+ *
+ * @param[in] void
+ *
+ * @returns Returns void
+ */
+static void dev_sm(void) {
+    char dataString[64] = {0};
 
+    switch( Device.state ) {
+        case DEV_STATE_SPLASH:
+            // Check if we have been in the splash long enough. If so, transition to climate
+            if( tick_timeSince(Device.state_refTime) > SPLASH_DISP_TIME ) {
+                Device.state = DEV_STATE_TELEM;
+                Device.state_refTime = tick_getTick();
+            }
+            break;
+
+        case DEV_STATE_CLIMATE:
+            // Retrieve device data
+            climate_getData();
+            break;
+
+        case DEV_STATE_TELEM:
+            // Retrieve our telemetry data
+            telemetry_getData();
+
+            // If we are due for it, print the data out over USB
+            if( tick_timeSince(Device.telem_data_refTime) > TELEM_DATA_TIME ) {
+                memset(dataString, 0x00, sizeof(dataString));
+                sprintf(dataString, "\33[2Kaccel x:%d y:%d z:%d\r",
+                    accel_data.x, accel_data.y, accel_data.z);
+
+                usb_sendString((const uint8_t *)dataString, sizeof(dataString));
+                Device.telem_data_refTime = tick_getTick();
+            }
+            break;
+
+        default:
+            break;
+    }
+}
+
+/*!
+ * @brief Main function and entry point for the firmware
+ *
+ * @param[in] void
+ *
+ * @return Returns void
+ */
+int main(void) {
     // Board init
+    tick_init();
     spi_init();
 
-    // Init the STAT LED DD register
-    LED_STAT_DDR |= (1 << LED_STAT_PIN);
+    // Driver init
+    display_init();
+    climate_init();
+    telemetry_init();
+    usb_init();
 
-    // Init the Disk level
-    ASSERT(disk_initialize(), RES_OK);
+    Device.state = DEV_STATE_SPLASH;
+    Device.state_refTime = tick_getTick();
 
-    // // Mount the FS
-    // ASSERT(pf_mount(&fs), FR_OK);
+    while(1) {
+        // Run the USB task
+        usb_update();
 
-    // Main application
-    while(MY_VALUE) {
-        // x++;
+        // Update the LED UI
 
-        // if(x > 7)
-        //     x = 0;
+        // Handle button events
 
-        // for (i = 0; i < PIXEL_NUM; ++i) {
-        //     if(i == x) {
-        //         pixels[i] = p;
-        //     }
-        //     else {
-        //         pixels[i] = empty;
-        //     }
-        // }
-        // ws2812_setleds(pixels, PIXEL_NUM);
+        // Run the device state machine
+        dev_sm();
 
-        // // Turn on the STAT LED
-        // LED_STAT_PORT |= (1 << LED_STAT_PIN);
-        // _delay_ms(250);
-        // // Turn off the STAT LED
-        // LED_STAT_PORT &= ~(1 << LED_STAT_PIN);
-        // // Wait 250 ms
-        // _delay_ms(250);
+        // Handle the oled display
+        updateDisplay();
+
+        // Throttle the application a bit
+        _delay_ms(10);
     }
 }

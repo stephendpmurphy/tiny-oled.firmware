@@ -3,19 +3,28 @@
     understanding of embedded firmware development.
     Copyright (C) 2020 Stephen Murphy - github.com/stephendpmurphy
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+    The above copyright notice and this permission notice shall be included in all
+    copies or substantial portions of the Software.
 
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    SOFTWARE.
 ****************************************************************************/
+
+/*! @file spi.c
+ * @brief Module to init, read, and write data via the AVR SPI module
+ */
 
 #include <avr/io.h>
 #include <stdint.h>
@@ -24,6 +33,9 @@
 #include "spi.h"
 #include "pins.h"
 
+/*!
+ * @brief This API initiliazes the AVR SPI module.
+ */
 void spi_init(void) {
 
     // Set MOSI and SCK as outputs
@@ -38,13 +50,32 @@ void spi_init(void) {
 
     // SD Chip Select
     SPI_SD_CS_DDR   |= (0x01 << SPI_SD_CS_PIN);
+    // Set it high
     SPI_SD_CS_PORT  |= (0x01 << SPI_SD_CS_PIN);
+
+    // Display Chip Select
+    SPI_DISP_CS_DDR |= (0x01 << SPI_DISP_CS_PIN);
+    // Set it high
+    SPI_DISP_CS_PORT |= (0x01 << SPI_DISP_CS_PIN);
+
+    // BME280 Chip Select
+    SPI_BME280_CS_DDR |= (0x01 << SPI_BME280_CS_PIN);
+    // Set it high
+    SPI_BME280_CS_PORT |= (0x01 << SPI_BME280_CS_PIN);
+
+    // ICM20948 Chip Select
+    SPI_ICM20948_CS_DDR |= (0x01 << SPI_ICM20948_CS_PIN);
+    // Set it high
+    SPI_ICM20948_CS_PORT |= (0x01 << SPI_ICM20948_CS_PIN);
 
     // SPI Register Init
     SPCR |= (1 << SPE) | (0x01 << MSTR); // SPI Enable | Master Mode
 }
 
-uint8_t spi_write(uint8_t *buf, uint8_t len) {
+/*!
+ * @brief This API writes data via the AVR SPI module.
+ */
+uint8_t spi_write(const uint8_t *buf, const uint8_t len) {
 
     uint8_t tx_count = 0;
 
@@ -60,14 +91,19 @@ uint8_t spi_write(uint8_t *buf, uint8_t len) {
         SPDR = buf[tx_count];
         // Wait for it to finish transmitting
         while(!(SPSR & (1<<SPIF)));
-        // Decrement the len count
+        // Increment the tx count
         tx_count++;
     }
 
     return EXIT_SUCCESS;
 }
 
-uint8_t spi_read(uint8_t *buf, uint8_t len) {
+/*!
+ * @brief This API reads data via the AVR SPI module.
+ */
+uint8_t spi_read(uint8_t *buf, const uint8_t len) {
+
+    uint8_t rx_count = 0;
 
     // Make sure the length is non zero, and we weren't
     // given a NULL ptr buffer
@@ -76,14 +112,29 @@ uint8_t spi_read(uint8_t *buf, uint8_t len) {
     }
 
     // While we still have bytes to read
-    while(len > 0) {
-        SPDR = 0xFF; // Load a dummy byte
-        while(!(SPSR & (1<<SPIF)));
+    while(rx_count < len) {
+        // Load a dummy byte to transmit
+        SPDR = 0xFF;
+        // Wait for the transmission to finish
+        while(!(SPSR & (1 << SPIF)));
         // Grab a byte from the input buffer
-        memcpy(&buf[len], (void *)&SPDR, 0x01);
-        // Decrement the len count
-        len--;
+        memcpy(&buf[rx_count], (void *)&SPDR, 0x01);
+        // Increment the RX count
+        rx_count++;
     }
 
     return EXIT_SUCCESS;
+}
+
+/*!
+ * @brief This API asserts the CS line for our desired device.
+ */
+void spi_assertCS(volatile uint8_t *port, const uint8_t pin, const uint8_t val) {
+
+    if( val ) {
+        *port |= (0x01 << pin);
+    }
+    else {
+        *port &= ~(0x01 << pin);
+    }
 }
