@@ -119,8 +119,11 @@ int8_t telemetry_init(void) {
     ret = icm20948_init(usr_read, usr_write, usr_delay_us);
 
     if( ret == ICM20948_RET_OK ) {
-        settings.gyro_en = ICM20948_GYRO_ENABLE;
-        settings.accel_en = ICM20948_ACCEL_ENABLE;
+        settings.gyro.en = ICM20948_MOD_ENABLED;
+        settings.gyro.fs = ICM20948_GYRO_FS_SEL_2000DPS;
+
+        settings.accel.en = ICM20948_MOD_ENABLED;
+        settings.accel.fs = ICM20948_ACCEL_FS_SEL_2G;
         ret = icm20948_applySettings(&settings);
     }
 

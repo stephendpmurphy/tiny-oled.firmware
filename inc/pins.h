@@ -67,11 +67,6 @@
 #define DISP_RES_DDR        (DDRB)
 #define DISP_RES_PORT       (PORTB)
 #define DISP_RES_PIN        (4)
-
-#define SPI_SD_CS_DDR   (DDRA)
-#define SPI_SD_CS_PORT  (PORTA)
-#define SPI_SD_CS_BIT   (3)
-
 #define DISP_DC_DDR         (DDRD)
 #define DISP_DC_PORT        (PORTD)
 #define DISP_DC_PIN         (7)

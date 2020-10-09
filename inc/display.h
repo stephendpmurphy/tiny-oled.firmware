@@ -73,4 +73,6 @@ void display_climate(const long int temp, const long int humidity, const long in
  */
 void display_telem(const int16_t x_val, const int16_t y_val, const int16_t z_val);
 
+void display_status(const uint8_t val);
+
 #endif // _DISPLAY_H_
