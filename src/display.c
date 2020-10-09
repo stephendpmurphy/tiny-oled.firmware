@@ -241,3 +241,17 @@ void display_telem(const int16_t x_val, const int16_t y_val, const int16_t z_val
 
     } while (u8g2_NextPage(&u8g2));
 }
+
+void display_status(const uint8_t val) {
+    char str[64] = {0x00};
+
+    u8g2_FirstPage(&u8g2);
+    do
+    {
+        u8g2_SetFont(&u8g2, u8g2_font_7x13B_tf);
+
+        sprintf(str, "sd stat: %d", val);
+        u8g2_DrawStr(&u8g2, 0, 14, str);
+
+    } while (u8g2_NextPage(&u8g2));
+}

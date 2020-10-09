@@ -28,6 +28,10 @@
 
 #include <stdio.h>
 #include <boot.h>
+#include "spi.h"
+#include "pff.h"
+
+FATFS fs = {0};
 
 /*!
  * @brief Main function and entry point for the bootloader

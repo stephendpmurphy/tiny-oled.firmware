@@ -33,11 +33,15 @@
 #include "pins.h"
 #include "spi.h"
 #include "avr_ws2812.h"
+#include "pff.h"
+#include "diskio.h"
 #include "display.h"
 #include "climate.h"
 #include "telemetry.h"
 #include "tick.h"
 #include "usb.h"
+#include "diskio.h"
+#include "pff.h"
 
 /*! @brief Enum for the different states our device coule be in */
 typedef enum {
@@ -146,6 +150,10 @@ static void dev_sm(void) {
  * @return Returns void
  */
 int main(void) {
+    const char* textString = "this is a test!\r\n";
+    uint8_t res;
+    FATFS fs;			/* File system object */
+
     // Board init
     tick_init();
     spi_init();
@@ -155,6 +163,26 @@ int main(void) {
     climate_init();
     telemetry_init();
     usb_init();
+
+    res = disk_initialize();
+    if( res == RES_OK ) {
+        res = pf_mount(&fs);
+    }
+
+    if( res == FR_OK) {
+        res |= pf_open("HELLO.TXT");
+    }
+
+    if( res == FR_OK ) {
+        res |= pf_write(textString, strlen("this is a test!\r\n"), NULL);
+        res |= pf_write(0, 0, NULL);
+    }
+
+    while(1) {
+        display_status(res);
+        _delay_ms(500);
+    }
+
 
     Device.state = DEV_STATE_SPLASH;
     Device.state_refTime = tick_getTick();

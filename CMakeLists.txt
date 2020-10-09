@@ -62,10 +62,12 @@ add_compile_options(
 # Add all of our include directories to our INCLUDE var
 set(INCLUDES ${CMAKE_SOURCE_DIR}/inc
              ${CMAKE_SOURCE_DIR}/inc/usb
+             ${CMAKE_SOURCE_DIR}/inc/sd
              ${CMAKE_SOURCE_DIR}/submodule/avr-ws2812/inc
              ${CMAKE_SOURCE_DIR}/submodule/u8g2/csrc
              ${CMAKE_SOURCE_DIR}/submodule/bme280_driver
              ${CMAKE_SOURCE_DIR}/submodule/icm20948/inc
+             ${CMAKE_SOURCE_DIR}/submodule/petit_fatfs/source
              ${CMAKE_SOURCE_DIR}/submodule/lufa/
              ${CMAKE_SOURCE_DIR}/submodule/lufa/LUFA
              ${CMAKE_SOURCE_DIR}/submodule/lufa/LUFA/Drivers/USB
@@ -75,7 +77,6 @@ set(INCLUDES ${CMAKE_SOURCE_DIR}/inc
              ${CMAKE_SOURCE_DIR}/submodule/lufa/LUFA/Drivers/USB/Class/Common
              ${CMAKE_SOURCE_DIR}/submodule/lufa/LUFA/Drivers/USB/Class/Device
              ${CMAKE_SOURCE_DIR}/submodule/lufa/LUFA/Platform
-             ${CMAKE_SOURCE_DIR}/submodule/lufa/LUFA/Platform/UC3
 )
 
 # Include the directories into CMake
@@ -90,6 +91,8 @@ set(APP_SRC ${CMAKE_SOURCE_DIR}/src/display.c
                 ${CMAKE_SOURCE_DIR}/src/tick.c
                 ${CMAKE_SOURCE_DIR}/src/usb/usb.c
                 ${CMAKE_SOURCE_DIR}/src/usb/descriptors.c
+                ${CMAKE_SOURCE_DIR}/src/sd/diskio.c
+                ${CMAKE_SOURCE_DIR}/submodule/petit_fatfs/source/pff.c
 )
 
 # Add our source files from all of our submodules
