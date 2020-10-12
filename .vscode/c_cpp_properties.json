@@ -14,10 +14,13 @@
                 "${workspaceFolder}/submodule/lufa/LUFA/Platform",
                 "/usr/lib/avr/**"
             ],
-            "defines": ["__AVR_ATmega32U4__"],
+            "defines": [
+                "__AVR_ATmega32U4__"
+            ],
             "compilerPath": "/usr/bin/avr-gcc",
             "intelliSenseMode": "gcc-x64",
-            "cStandard": "c99"
+            "cStandard": "c99",
+            "configurationProvider": "ms-vscode.cmake-tools"
         }
     ],
     "version": 4
