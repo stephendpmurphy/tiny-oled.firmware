@@ -28,6 +28,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <util/delay.h>
 #include "main.h"
 #include "pins.h"
@@ -54,6 +55,13 @@ typedef struct {
     uint32_t disp_refTime;
 } strDevice_t;
 
+typedef struct {
+    bool BTN0_event;
+    bool BTN1_event;
+    bool BTN2_event;
+    bool BTN3_event;
+} strButtonEvent_t;
+
 #define TELEM_DATA_TIME     (30)    // ms
 #define SPLASH_DISP_TIME    (1500)  // ms
 #define STAT_LED_FLASH_RATE (1000)  // ms
@@ -62,6 +70,7 @@ typedef struct {
 /*! @brief Structure holding our Device state and ref times */
 static strDevice_t Device;
 
+static strButtonEvent_t btnEvents;
 /*!
  * @brief This function updates the display based on the current device state
  *
@@ -138,6 +147,40 @@ static void dev_sm(void) {
     }
 }
 
+static void setupExternalInterrupts(void) {
+
+    // Disable the interrupt
+    EIMSK = 0x00;
+    // Enable the interrupts as rising edge
+    EICRA |= (1 << ISC01) | (1 << ISC00);
+    EICRA |= (1 << ISC11) | (1 << ISC10);
+    EICRA |= (1 << ISC21) | (1 << ISC20);
+    EICRA |= (1 << ISC31) | (1 << ISC30);
+
+    // Enable the interrupts INT0 - 3 / PD0 - 3
+    EIMSK = (1 << INT2) | (1 << INT0) | (1 << INT1) | (1 << INT2);
+}
+
+ISR(INT0_vect) {
+    btnEvents.BTN0_event = true;
+    _delay_ms(40);
+}
+
+ISR(INT1_vect) {
+    btnEvents.BTN1_event = true;
+    _delay_ms(40);
+}
+
+ISR(INT2_vect) {
+    btnEvents.BTN2_event = true;
+    _delay_ms(40);
+}
+
+ISR(INT3_vect) {
+    btnEvents.BTN3_event = true;
+    _delay_ms(40);
+}
+
 /*!
  * @brief Main function and entry point for the firmware
  *
@@ -156,10 +199,29 @@ int main(void) {
     telemetry_init();
     usb_init();
 
+    // Enable interrupts
+    SREG |= (1 << 7);
+
+    setupExternalInterrupts();
+
+    LED_STAT_DDR |= (1 << LED_STAT_PIN);
+
     Device.state = DEV_STATE_SPLASH;
     Device.state_refTime = tick_getTick();
 
     while(1) {
+
+        if( btnEvents.BTN1_event ) {
+            btnEvents.BTN1_event = false;
+            LED_STAT_PORT |= (1 << LED_STAT_PIN);
+            Device.state = DEV_STATE_CLIMATE;
+        }
+        else if( btnEvents.BTN2_event ) {
+            btnEvents.BTN2_event = false;
+            LED_STAT_PORT &= ~(1 << LED_STAT_PIN);
+            Device.state = DEV_STATE_TELEM;
+        }
+
         // Run the USB task
         usb_update();
 
