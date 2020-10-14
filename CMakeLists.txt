@@ -88,6 +88,7 @@ set(APP_SRC ${CMAKE_SOURCE_DIR}/src/display.c
                 ${CMAKE_SOURCE_DIR}/src/spi.c
                 ${CMAKE_SOURCE_DIR}/src/telemetry.c
                 ${CMAKE_SOURCE_DIR}/src/tick.c
+                ${CMAKE_SOURCE_DIR}/src/uart.c
                 ${CMAKE_SOURCE_DIR}/src/usb/usb.c
                 ${CMAKE_SOURCE_DIR}/src/usb/descriptors.c
 )

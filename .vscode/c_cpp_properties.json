@@ -19,8 +19,7 @@
             ],
             "compilerPath": "/usr/bin/avr-gcc",
             "intelliSenseMode": "gcc-x64",
-            "cStandard": "c99",
-            "configurationProvider": "ms-vscode.cmake-tools"
+            "cStandard": "c99"
         }
     ],
     "version": 4

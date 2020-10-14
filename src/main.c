@@ -38,6 +38,7 @@
 #include "climate.h"
 #include "telemetry.h"
 #include "tick.h"
+#include "uart.h"
 #include "usb.h"
 
 /*! @brief Enum for the different states our device coule be in */
@@ -192,6 +193,9 @@ int main(void) {
     // Board init
     tick_init();
     spi_init();
+    uart_init();
+
+    printf("tiny-oled - Compiled %s - %s\n\r", __DATE__, __TIME__);
 
     // Driver init
     display_init();
@@ -209,18 +213,9 @@ int main(void) {
     Device.state = DEV_STATE_SPLASH;
     Device.state_refTime = tick_getTick();
 
-    while(1) {
+    printf("Init complete!\n\r");
 
-        if( btnEvents.BTN1_event ) {
-            btnEvents.BTN1_event = false;
-            LED_STAT_PORT |= (1 << LED_STAT_PIN);
-            Device.state = DEV_STATE_CLIMATE;
-        }
-        else if( btnEvents.BTN2_event ) {
-            btnEvents.BTN2_event = false;
-            LED_STAT_PORT &= ~(1 << LED_STAT_PIN);
-            Device.state = DEV_STATE_TELEM;
-        }
+    while(1) {
 
         // Run the USB task
         usb_update();
@@ -228,6 +223,18 @@ int main(void) {
         // Update the LED UI
 
         // Handle button events
+        if( btnEvents.BTN1_event ) {
+            btnEvents.BTN1_event = false;
+            LED_STAT_PORT |= (1 << LED_STAT_PIN);
+            Device.state = DEV_STATE_CLIMATE;
+            printf("Displaying climate.\n\r");
+        }
+        else if( btnEvents.BTN2_event ) {
+            btnEvents.BTN2_event = false;
+            LED_STAT_PORT &= ~(1 << LED_STAT_PIN);
+            Device.state = DEV_STATE_TELEM;
+            printf("Displaying telemetry.\n\r");
+        }
 
         // Run the device state machine
         dev_sm();
