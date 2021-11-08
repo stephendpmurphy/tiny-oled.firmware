@@ -24,7 +24,7 @@ For this project I will be using an [ATmega32u4 from Atmel/Microchip](https://ww
 - 1x I2c
 - 1x Full Speed USB
 
-The project for the hardware can be found in the [tiny-oled.hardware](https://github.com/stephendpmurphy/tiny-oled.hardware) repository on my profile. The project will be created and managed using the open source electrical design suite, [KiCad](https://kicad-pcb.org/).
+The project for the hardware can be found in the [tiny-oled.hardware](https://github.com/stephendpmurphy/tiny-oled.hardware) repository on my profile. The project will be created and managed using the open source electrical design suite, [KiCad](https://kicad.org/).
 
 # Getting started
 
